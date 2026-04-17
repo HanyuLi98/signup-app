@@ -21,6 +21,12 @@ const trainingOptions = [
   'Welding Training',
 ]
 
+const bgStyle = {
+  backgroundImage: "url('/Background_EMEA.png')",
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+}
+
 export default function Home() {
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null)
   const [counts, setCounts] = useState<Record<string, number>>({})
@@ -89,7 +95,7 @@ export default function Home() {
     setLoading(false)
 
     if (res.ok) {
-      setMessage('🎉 Registration successful! A confirmation email has been sent to your inbox.')
+      setMessage('🎉 Registration successful! A confirmation email has been sent to your inbox. Please also check your spam / junk folder if you do not see it.')
       setMonthCount(c => c + 1)
       setCounts(prev => ({ ...prev, [selectedMonth!]: (prev[selectedMonth!] ?? 0) + 1 }))
       setRegistrations(prev => [...prev, { company_name: form.companyName, country_region: form.countryRegion }])
@@ -99,58 +105,58 @@ export default function Home() {
     }
   }
 
-  const inputClass = "w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+  const inputClass = "w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 bg-white"
   const labelClass = "block text-sm font-medium text-gray-700 mb-1"
 
-  // 首页：月份选择
   if (!selectedMonth) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col items-center justify-center p-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Training Registration 2026</h1>
-        <p className="text-gray-500 mb-10 text-center">Select a month to register for your training session</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-3xl">
-          {MONTHS.map(({ key, label }) => {
-            const count = counts[key] ?? 0
-            const full = count >= max
-            return (
-              <button
-                key={key}
-                onClick={() => !full && handleSelectMonth(key)}
-                disabled={full}
-                className={`rounded-2xl p-6 text-left shadow-md transition-all border-2
-                  ${full
-                    ? 'bg-gray-100 border-gray-200 cursor-not-allowed opacity-60'
-                    : 'bg-white border-transparent hover:border-blue-500 hover:shadow-lg cursor-pointer'
-                  }`}
-              >
-                <div className="text-lg font-semibold text-gray-800 mb-3">{label}</div>
-                <div className="flex items-center justify-between">
-                  <span className={`text-2xl font-bold ${full ? 'text-gray-400' : 'text-blue-600'}`}>
-                    {count} / {max}
-                  </span>
-                  <span className={`text-xs font-medium px-2 py-1 rounded-full ${full ? 'bg-red-100 text-red-500' : 'bg-green-100 text-green-600'}`}>
-                    {full ? 'Full' : 'Available'}
-                  </span>
-                </div>
-                <div className="mt-3 w-full bg-gray-200 rounded-full h-1.5">
-                  <div
-                    className={`h-1.5 rounded-full transition-all ${full ? 'bg-red-400' : 'bg-blue-500'}`}
-                    style={{ width: `${(count / max) * 100}%` }}
-                  />
-                </div>
-              </button>
-            )
-          })}
+      <main className="min-h-screen flex flex-col items-center justify-center p-6" style={bgStyle}>
+        <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 w-full max-w-3xl shadow-xl">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2 text-center">Training Registration 2026</h1>
+          <p className="text-gray-500 mb-8 text-center">Select a month to register for your training session</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {MONTHS.map(({ key, label }) => {
+              const count = counts[key] ?? 0
+              const full = count >= max
+              return (
+                <button
+                  key={key}
+                  onClick={() => !full && handleSelectMonth(key)}
+                  disabled={full}
+                  className={`rounded-2xl p-6 text-left shadow-md transition-all border-2
+                    ${full
+                      ? 'bg-gray-100 border-gray-200 cursor-not-allowed opacity-60'
+                      : 'bg-white border-transparent hover:border-blue-500 hover:shadow-lg cursor-pointer'
+                    }`}
+                >
+                  <div className="text-lg font-semibold text-gray-800 mb-3">{label}</div>
+                  <div className="flex items-center justify-between">
+                    <span className={`text-2xl font-bold ${full ? 'text-gray-400' : 'text-blue-600'}`}>
+                      {count} / {max}
+                    </span>
+                    <span className={`text-xs font-medium px-2 py-1 rounded-full ${full ? 'bg-red-100 text-red-500' : 'bg-green-100 text-green-600'}`}>
+                      {full ? 'Full' : 'Available'}
+                    </span>
+                  </div>
+                  <div className="mt-3 w-full bg-gray-200 rounded-full h-1.5">
+                    <div
+                      className={`h-1.5 rounded-full transition-all ${full ? 'bg-red-400' : 'bg-blue-500'}`}
+                      style={{ width: `${(count / max) * 100}%` }}
+                    />
+                  </div>
+                </button>
+              )
+            })}
+          </div>
         </div>
       </main>
     )
   }
 
-  // 报名表
   const monthLabel = MONTHS.find(m => m.key === selectedMonth)?.label
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-6">
-      <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-xl">
+    <main className="min-h-screen flex items-center justify-center p-6" style={bgStyle}>
+      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-xl">
         <button onClick={() => setSelectedMonth(null)} className="text-blue-500 text-sm mb-4 hover:underline">← Back to months</button>
         <h1 className="text-2xl font-bold text-gray-900 mb-1">{monthLabel}</h1>
         <p className="text-gray-500 text-sm mb-4">Training Registration</p>
@@ -202,7 +208,7 @@ export default function Home() {
             <label className={labelClass}>Job Responsibilities <span className="text-red-500">*</span></label>
             <textarea value={form.jobResponsibilities} onChange={e => setForm({...form, jobResponsibilities: e.target.value})}
               placeholder="Briefly describe your responsibilities" rows={3}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 resize-none" />
+              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 resize-none bg-white" />
           </div>
           <div>
             <label className={labelClass}>Attend Training Session <span className="text-red-500">*</span></label>
@@ -221,11 +227,11 @@ export default function Home() {
           </div>
           <div>
             <label className={labelClass}>Telephone Number <span className="text-red-500">*</span></label>
-            <input type="tel" value={form.telephone} onChange={e => setForm({...form, telephone: e.target.value})} placeholder="e.g. +86 138 0000 0000" className={inputClass} />
+            <input type="tel" value={form.telephone} onChange={e => setForm({...form, telephone: e.target.value})} placeholder="+49 ..." className={inputClass} />
           </div>
 
           {error && <p className="text-red-500 text-sm">{error}</p>}
-          {message && <p className="text-green-600 text-sm">{message}</p>}
+          {message && <p className="text-green-600 text-sm font-medium">{message}</p>}
 
           <button onClick={handleSubmit} disabled={loading || monthCount >= max}
             className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 rounded-lg transition text-base">
