@@ -29,11 +29,11 @@ export async function GET(req: Request) {
   const month = searchParams.get('month')
 
   if (month) {
-    const { count } = await supabase
+    const { count, data } = await supabase
       .from('signups')
-      .select('*', { count: 'exact', head: true })
+      .select('company_name, country_region', { count: 'exact' })
       .eq('month', month)
-    return NextResponse.json({ count: count ?? 0, max: MAX_SLOTS })
+    return NextResponse.json({ count: count ?? 0, max: MAX_SLOTS, registrations: data ?? [] })
   }
 
   const months = ['2026-04', '2026-05', '2026-06', '2026-07', '2026-08', '2026-09', '2026-10', '2026-11', '2026-12']

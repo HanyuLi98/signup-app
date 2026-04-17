@@ -33,6 +33,7 @@ export default function Home() {
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
   const [monthCount, setMonthCount] = useState(0)
+  const [registrations, setRegistrations] = useState<{ company_name: string, country_region: string }[]>([])
 
   useEffect(() => {
     fetch('/api/signup')
@@ -48,6 +49,12 @@ export default function Home() {
     setMessage('')
     setError('')
     setMonthCount(counts[key] ?? 0)
+    fetch(`/api/signup?month=${key}`)
+      .then(res => res.json())
+      .then(data => {
+        setMonthCount(data.count)
+        setRegistrations(data.registrations ?? [])
+      })
   }
 
   const handleTraining = (option: string) => {
@@ -85,6 +92,7 @@ export default function Home() {
       setMessage('🎉 Registration successful! A confirmation email has been sent to your inbox.')
       setMonthCount(c => c + 1)
       setCounts(prev => ({ ...prev, [selectedMonth!]: (prev[selectedMonth!] ?? 0) + 1 }))
+      setRegistrations(prev => [...prev, { company_name: form.companyName, country_region: form.countryRegion }])
       setForm({ companyName: '', countryRegion: '', name: '', jobTitle: '', jobResponsibilities: '', trainingSessions: [], email: '', telephone: '' })
     } else {
       setError(data.error || 'Registration failed, please try again.')
@@ -147,13 +155,31 @@ export default function Home() {
         <h1 className="text-2xl font-bold text-gray-900 mb-1">{monthLabel}</h1>
         <p className="text-gray-500 text-sm mb-4">Training Registration</p>
 
-        <div className="text-center mb-6">
+        {/* 名额 */}
+        <div className="text-center mb-4">
           <span className={`text-lg font-bold ${monthCount >= max ? 'text-red-500' : 'text-blue-600'}`}>
             {monthCount} / {max}
           </span>
           <span className="text-gray-500 ml-2 text-sm">spots filled</span>
           {monthCount >= max && <p className="text-red-500 mt-1 text-sm font-medium">Registration is full</p>}
         </div>
+
+        {/* 已注册公司列表 */}
+        {registrations.length > 0 && (
+          <div className="mb-6 border border-gray-100 rounded-xl overflow-hidden">
+            <div className="bg-gray-50 px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              Registered Companies
+            </div>
+            <div className="divide-y divide-gray-100">
+              {registrations.map((r, i) => (
+                <div key={i} className="flex items-center justify-between px-4 py-2.5">
+                  <span className="text-sm font-medium text-gray-700">{r.company_name}</span>
+                  <span className="text-xs text-gray-400">{r.country_region}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="space-y-4">
           <div>
