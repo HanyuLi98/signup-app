@@ -17,34 +17,48 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const { name, email, region } = await req.json()
+  const { companyName, countryRegion, name, jobTitle, jobResponsibilities, trainingSessions, email, telephone } = await req.json()
 
   // 检查名额
   const { count } = await supabase
     .from('signups')
     .select('*', { count: 'exact', head: true })
   if ((count ?? 0) >= MAX_SLOTS) {
-    return NextResponse.json({ error: '报名名额已满' }, { status: 400 })
+    return NextResponse.json({ error: 'Registration is full' }, { status: 400 })
   }
 
   // 写入数据库
   const { error } = await supabase
     .from('signups')
-    .insert({ name, email, region })
+    .insert({
+      company_name: companyName,
+      country_region: countryRegion,
+      name,
+      job_title: jobTitle,
+      job_responsibilities: jobResponsibilities,
+      training_sessions: trainingSessions,
+      email,
+      telephone,
+    })
   if (error) {
-    return NextResponse.json({ error: '该邮箱已报名过' }, { status: 400 })
+    return NextResponse.json({ error: 'This email has already been registered' }, { status: 400 })
   }
 
   // 发送确认邮件
   await resend.emails.send({
     from: 'onboarding@resend.dev',
     to: email,
-    subject: '报名成功确认 ✅',
+    subject: 'Registration Confirmed ✅',
     html: `
-      <h2>你好，${name}！</h2>
-      <p>你已成功报名！</p>
-      <p>报名区域：${region}</p>
-      <p>感谢你的参与，我们会尽快联系你。</p>
+      <h2>Hello, ${name}!</h2>
+      <p>Your registration has been confirmed. Here are your details:</p>
+      <ul>
+        <li><strong>Company:</strong> ${companyName}</li>
+        <li><strong>Country / Region:</strong> ${countryRegion}</li>
+        <li><strong>Job Title:</strong> ${jobTitle}</li>
+        <li><strong>Training Sessions:</strong> ${trainingSessions.join(', ')}</li>
+      </ul>
+      <p>We look forward to seeing you!</p>
     `
   })
 

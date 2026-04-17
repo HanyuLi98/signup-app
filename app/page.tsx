@@ -1,10 +1,25 @@
 'use client'
 import { useState, useEffect } from 'react'
 
+const trainingOptions = [
+  'Basic Training',
+  'Advanced Training',
+  'Palletizing Training',
+  'VX 500 Training',
+  'Welding Training',
+]
+
 export default function Home() {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [region, setRegion] = useState('')
+  const [form, setForm] = useState({
+    companyName: '',
+    countryRegion: '',
+    name: '',
+    jobTitle: '',
+    jobResponsibilities: '',
+    trainingSessions: [] as string[],
+    email: '',
+    telephone: '',
+  })
   const [count, setCount] = useState(0)
   const [max, setMax] = useState(10)
   const [loading, setLoading] = useState(false)
@@ -20,9 +35,23 @@ export default function Home() {
       })
   }, [])
 
+  const handleTraining = (option: string) => {
+    setForm(prev => ({
+      ...prev,
+      trainingSessions: prev.trainingSessions.includes(option)
+        ? prev.trainingSessions.filter(t => t !== option)
+        : [...prev.trainingSessions, option]
+    }))
+  }
+
   const handleSubmit = async () => {
-    if (!name || !email || !region) {
+    const { companyName, countryRegion, name, jobTitle, jobResponsibilities, trainingSessions, email, telephone } = form
+    if (!companyName || !countryRegion || !name || !jobTitle || !jobResponsibilities || !email || !telephone) {
       setError('请填写所有字段')
+      return
+    }
+    if (trainingSessions.length === 0) {
+      setError('请至少选择一个培训课程')
       return
     }
     setLoading(true)
@@ -32,74 +61,110 @@ export default function Home() {
     const res = await fetch('/api/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, region })
+      body: JSON.stringify({ ...form, region: countryRegion })
     })
     const data = await res.json()
     setLoading(false)
 
     if (res.ok) {
-      setMessage('🎉 报名成功！确认邮件已发送到你的邮箱')
+      setMessage('🎉 Registration successful! A confirmation email has been sent to your inbox.')
       setCount(c => c + 1)
-      setName('')
-      setEmail('')
-      setRegion('')
+      setForm({
+        companyName: '', countryRegion: '', name: '', jobTitle: '',
+        jobResponsibilities: '', trainingSessions: [], email: '', telephone: '',
+      })
     } else {
-      setError(data.error || '报名失败，请重试')
+      setError(data.error || 'Registration failed, please try again.')
     }
   }
 
-  return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-2">活动报名</h1>
+  const inputClass = "w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+  const labelClass = "block text-sm font-medium text-gray-700 mb-1"
 
-        {/* 名额显示 */}
+  return (
+    <main className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
+      <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-xl">
+
+        <h1 className="text-2xl font-bold text-center text-gray-900 mb-1">Training Registration</h1>
+        <p className="text-center text-gray-500 text-sm mb-4">Please fill in your details to register</p>
+
+        {/* 名额 */}
         <div className="text-center mb-6">
-          <span className="text-lg font-semibold text-blue-600">
+          <span className={`text-lg font-bold ${count >= max ? 'text-red-500' : 'text-blue-600'}`}>
             {count} / {max}
           </span>
-          <span className="text-gray-500 ml-2">名额已报名</span>
-          {count >= max && (
-            <p className="text-red-500 mt-1 font-medium">名额已满</p>
-          )}
+          <span className="text-gray-500 ml-2 text-sm">spots filled</span>
+          {count >= max && <p className="text-red-500 mt-1 text-sm font-medium">Registration is full</p>}
         </div>
 
-        {/* 表单 */}
         <div className="space-y-4">
+
+          {/* Company Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">姓名</label>
-            <input
-              type="text"
-              value={name}
-              onChange={e => setName(e.target.value)}
-              placeholder="请输入姓名"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <label className={labelClass}>Company Name <span className="text-red-500">*</span></label>
+            <input type="text" value={form.companyName} onChange={e => setForm({...form, companyName: e.target.value})}
+              placeholder="Enter company name" className={inputClass} />
           </div>
+
+          {/* Country / Region */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
-            <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="请输入邮箱"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <label className={labelClass}>Country / Region <span className="text-red-500">*</span></label>
+            <input type="text" value={form.countryRegion} onChange={e => setForm({...form, countryRegion: e.target.value})}
+              placeholder="e.g. China, Germany, USA" className={inputClass} />
           </div>
+
+          {/* Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">区域</label>
-            <select
-              value={region}
-              onChange={e => setRegion(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">请选择区域</option>
-              <option value="华北">华北</option>
-              <option value="华南">华南</option>
-              <option value="华东">华东</option>
-              <option value="华西">华西</option>
-              <option value="其他">其他</option>
-            </select>
+            <label className={labelClass}>Name of Participant <span className="text-red-500">*</span></label>
+            <input type="text" value={form.name} onChange={e => setForm({...form, name: e.target.value})}
+              placeholder="Enter full name" className={inputClass} />
+          </div>
+
+          {/* Job Title */}
+          <div>
+            <label className={labelClass}>Job Title <span className="text-red-500">*</span></label>
+            <input type="text" value={form.jobTitle} onChange={e => setForm({...form, jobTitle: e.target.value})}
+              placeholder="e.g. Engineer, Manager" className={inputClass} />
+          </div>
+
+          {/* Job Responsibilities */}
+          <div>
+            <label className={labelClass}>Job Responsibilities <span className="text-red-500">*</span></label>
+            <textarea value={form.jobResponsibilities} onChange={e => setForm({...form, jobResponsibilities: e.target.value})}
+              placeholder="Briefly describe your responsibilities" rows={3}
+              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 resize-none" />
+          </div>
+
+          {/* Training Sessions */}
+          <div>
+            <label className={labelClass}>Attend Training Session <span className="text-red-500">*</span></label>
+            <div className="space-y-2 mt-1">
+              {trainingOptions.map(option => (
+                <label key={option} className="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={form.trainingSessions.includes(option)}
+                    onChange={() => handleTraining(option)}
+                    className="w-4 h-4 accent-blue-600"
+                  />
+                  <span className="text-gray-700 text-sm group-hover:text-blue-600 transition">{option}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className={labelClass}>Email <span className="text-red-500">*</span></label>
+            <input type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})}
+              placeholder="Enter email address" className={inputClass} />
+          </div>
+
+          {/* Telephone */}
+          <div>
+            <label className={labelClass}>Telephone Number <span className="text-red-500">*</span></label>
+            <input type="tel" value={form.telephone} onChange={e => setForm({...form, telephone: e.target.value})}
+              placeholder="e.g. +86 138 0000 0000" className={inputClass} />
           </div>
 
           {error && <p className="text-red-500 text-sm">{error}</p>}
@@ -108,10 +173,11 @@ export default function Home() {
           <button
             onClick={handleSubmit}
             disabled={loading || count >= max}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-2 rounded-lg transition"
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 rounded-lg transition text-base"
           >
-            {loading ? '提交中...' : '立即报名'}
+            {loading ? 'Submitting...' : 'Register Now'}
           </button>
+
         </div>
       </div>
     </main>
