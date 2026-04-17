@@ -21,7 +21,6 @@ export async function GET(req: Request) {
     return NextResponse.json({ count: count ?? 0, max: MAX_SLOTS })
   }
 
-  // 返回所有月份的名额
   const months = ['2026-04', '2026-05', '2026-06', '2026-07', '2026-08', '2026-09', '2026-10', '2026-11', '2026-12']
   const counts: Record<string, number> = {}
   for (const m of months) {
@@ -68,21 +67,65 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'This email has already been registered for this month' }, { status: 400 })
   }
 
+  // 月份显示格式
+  const monthNames: Record<string, string> = {
+    '2026-04': 'April 2026', '2026-05': 'May 2026', '2026-06': 'June 2026',
+    '2026-07': 'July 2026', '2026-08': 'August 2026', '2026-09': 'September 2026',
+    '2026-10': 'October 2026', '2026-11': 'November 2026', '2026-12': 'December 2026',
+  }
+  const monthLabel = monthNames[month] ?? month
+
   // 发送确认邮件
   await resend.emails.send({
     from: 'onboarding@resend.dev',
     to: email,
-    subject: `Registration Confirmed - ${month} ✅`,
+    subject: `Training Registration Confirmed – ${monthLabel} ✅`,
     html: `
-      <h2>Hello, ${name}!</h2>
-      <p>Your registration for <strong>${month}</strong> has been confirmed.</p>
-      <ul>
-        <li><strong>Company:</strong> ${companyName}</li>
-        <li><strong>Country / Region:</strong> ${countryRegion}</li>
-        <li><strong>Job Title:</strong> ${jobTitle}</li>
-        <li><strong>Training Sessions:</strong> ${trainingSessions.join(', ')}</li>
-      </ul>
-      <p>We look forward to seeing you!</p>
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+
+        <h2 style="color: #1d4ed8;">Training Registration Confirmed</h2>
+        <p>Dear <strong>${name}</strong>,</p>
+        <p>Thank you for registering! Your registration has been confirmed. Below are your details and training information.</p>
+
+        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
+
+        <h3 style="color: #1d4ed8;">📋 Your Registration Details</h3>
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr><td style="padding: 6px 0; color: #6b7280; width: 160px;">Company</td><td><strong>${companyName}</strong></td></tr>
+          <tr><td style="padding: 6px 0; color: #6b7280;">Country / Region</td><td><strong>${countryRegion}</strong></td></tr>
+          <tr><td style="padding: 6px 0; color: #6b7280;">Name</td><td><strong>${name}</strong></td></tr>
+          <tr><td style="padding: 6px 0; color: #6b7280;">Job Title</td><td><strong>${jobTitle}</strong></td></tr>
+          <tr><td style="padding: 6px 0; color: #6b7280;">Training Month</td><td><strong>${monthLabel}</strong></td></tr>
+        </table>
+
+        <h3 style="color: #1d4ed8; margin-top: 24px;">✅ Registered Training Sessions</h3>
+        <ul style="padding-left: 20px;">
+          ${trainingSessions.map((s: string) => `<li style="margin-bottom: 4px;">${s}</li>`).join('')}
+        </ul>
+
+        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
+
+        <h3 style="color: #1d4ed8;">🕘 Daily Training Schedule</h3>
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr><td style="padding: 6px 0; color: #6b7280; width: 160px;">Morning</td><td>09:30 – 12:00</td></tr>
+          <tr><td style="padding: 6px 0; color: #6b7280;">Lunch Break</td><td>12:00 – 13:00</td></tr>
+          <tr><td style="padding: 6px 0; color: #6b7280;">Afternoon</td><td>13:00 – 17:00</td></tr>
+        </table>
+
+        <h3 style="color: #1d4ed8; margin-top: 24px;">📍 Training Address</h3>
+        <p style="margin: 0;">Dobot Europe GmbH<br/>Werner-Heisenberg-Str. 2A<br/>63263, Neu-Isenburg, Germany</p>
+
+        <h3 style="color: #1d4ed8; margin-top: 24px;">📌 Additional Notes</h3>
+        <ul style="padding-left: 20px; line-height: 1.8;">
+          <li><strong>Travel and accommodation:</strong> To be arranged by the customer.</li>
+          <li><strong>Provided by Dobot during training:</strong> Complimentary soft drinks, snacks, and a simple lunch.</li>
+          <li><strong>Laptop:</strong> Please bring your own PC, as we will not provide computers for the training.</li>
+        </ul>
+
+        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
+        <p style="color: #6b7280; font-size: 13px;">If you have any questions, please don't hesitate to contact us.<br/>We look forward to seeing you in <strong>${monthLabel}</strong>!</p>
+
+      </div>
     `
   })
 
