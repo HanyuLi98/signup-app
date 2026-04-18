@@ -143,8 +143,6 @@ export default function Home() {
   const [error, setError] = useState('')
   const [sessionCount, setSessionCount] = useState(0)
   const [registrations, setRegistrations] = useState<Registration[]>([])
-
-  // 证书下载相关
   const [showCertModal, setShowCertModal] = useState(false)
   const [certPassword, setCertPassword] = useState('')
   const [certError, setCertError] = useState('')
@@ -219,7 +217,6 @@ export default function Home() {
     if (res.ok) {
       setCertFiles(data.files)
       setCertUnlocked(true)
-      setCertError('')
     } else {
       setCertError('Wrong password, please try again.')
     }
@@ -230,10 +227,16 @@ export default function Home() {
   const sel = SESSIONS.find(s => s.key === selectedKey)
   const months = ['May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
+  const watermark = (
+    <p className="absolute bottom-4 right-5 text-white/90 text-sm font-medium drop-shadow">
+      @ikun · Questions? <a href="mailto:hanyu.li@dobot-global.com" className="underline">hanyu.li@dobot-global.com</a>
+    </p>
+  )
+
   if (!selectedKey) {
     return (
       <main className="min-h-screen flex flex-col items-center justify-center p-6 relative" style={bgStyle}>
-        <div className="bg-white/85 backdrop-blur-sm rounded-3xl p-8 w-full max-w-4xl shadow-xl">
+        <div className="bg-white/85 backdrop-blur-sm rounded-3xl p-8 w-full max-w-5xl shadow-xl">
           <h1 className="text-3xl font-bold text-gray-900 mb-1 text-center">Training Registration 2026</h1>
           <p className="text-gray-500 mb-4 text-center text-sm">Select a session to register for your training</p>
           <div className="flex justify-center mb-8">
@@ -288,7 +291,7 @@ export default function Home() {
             })}
           </div>
         </div>
-        <p className="absolute bottom-3 right-4 text-white/60 text-xs">@ikun · Questions? <a href="mailto:hanyu.li@dobot-global.com" className="underline">hanyu.li@dobot-global.com</a></p>
+        {watermark}
       </main>
     )
   }
@@ -297,17 +300,15 @@ export default function Home() {
     <main className="min-h-screen flex items-start justify-center p-6 relative" style={bgStyle}>
       <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-xl my-6">
         <button onClick={() => setSelectedKey(null)} className="text-blue-500 text-sm mb-4 hover:underline">← Back to sessions</button>
-        <div className="flex items-start justify-between mb-1">
+        <div className="flex items-center justify-between mb-1">
           <h1 className="text-2xl font-bold text-gray-900">{sel?.label} – {sel?.sublabel}</h1>
-          {/* 证书下载按钮 */}
           <button onClick={() => setShowCertModal(true)}
             className="ml-3 shrink-0 inline-flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white text-xs font-semibold px-3 py-2 rounded-lg transition">
             🎓 Certificate
           </button>
         </div>
-        <p className="text-blue-600 text-sm font-medium mb-1">📅 {sel?.dates}</p>
+        <p className="text-blue-600 text-sm font-medium mb-3">📅 {sel?.dates}</p>
 
-        {/* 课程日程 */}
         <div className="bg-blue-50 rounded-xl p-4 mb-4">
           <p className="text-xs font-semibold text-blue-700 mb-2 uppercase tracking-wide">Training Schedule</p>
           <div className="space-y-1">
@@ -321,14 +322,12 @@ export default function Home() {
           </div>
         </div>
 
-        {/* 名额 */}
         <div className="text-center mb-4">
           <span className={`text-lg font-bold ${sessionCount >= max ? 'text-red-500' : 'text-blue-600'}`}>{sessionCount} / {max}</span>
           <span className="text-gray-500 ml-2 text-sm">spots filled</span>
           {sessionCount >= max && <p className="text-red-500 mt-1 text-sm">Registration is full</p>}
         </div>
 
-        {/* 已注册公司 */}
         {registrations.length > 0 && (
           <div className="mb-6 border border-gray-100 rounded-xl overflow-hidden">
             <div className="bg-gray-50 px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide">Registered Companies</div>
@@ -398,21 +397,17 @@ export default function Home() {
               <button onClick={() => { setShowCertModal(false); setCertUnlocked(false); setCertPassword(''); setCertError('') }}
                 className="text-gray-400 hover:text-gray-600 text-xl">✕</button>
             </div>
-
             <p className="text-sm text-gray-500 mb-1">{sel?.label} – {sel?.sublabel}</p>
             <p className="text-xs text-gray-400 mb-4">{sel?.dates}</p>
 
             {!certUnlocked ? (
               <>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Enter Password</label>
-                <input
-                  type="password"
-                  value={certPassword}
+                <input type="password" value={certPassword}
                   onChange={e => setCertPassword(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && handleCertUnlock()}
                   placeholder="Enter password to access certificates"
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 mb-3"
-                />
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 mb-3" />
                 {certError && <p className="text-red-500 text-sm mb-3">{certError}</p>}
                 <button onClick={handleCertUnlock} disabled={certLoading || !certPassword}
                   className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold py-2.5 rounded-lg transition">
@@ -424,7 +419,7 @@ export default function Home() {
                 {certFiles.length === 0 ? (
                   <p className="text-gray-500 text-sm text-center py-4">No certificates available for this session yet.</p>
                 ) : (
-                  <div className="space-y-2">
+                  <div className="space-y-2 max-h-72 overflow-y-auto">
                     {certFiles.map((f, i) => (
                       <a key={i} href={f.url} target="_blank" rel="noopener noreferrer"
                         className="flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-green-50 border border-gray-200 hover:border-green-300 rounded-xl transition group">
@@ -439,8 +434,7 @@ export default function Home() {
           </div>
         </div>
       )}
-
-      <p className="absolute bottom-3 right-4 text-white/60 text-xs">@ikun · Questions? <a href="mailto:hanyu.li@dobot-global.com" className="underline">hanyu.li@dobot-global.com</a></p>
+      {watermark}
     </main>
   )
 }
