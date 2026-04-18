@@ -117,11 +117,8 @@ const SESSIONS = [
 ]
 
 const trainingOptions = [
-  'Basic Training',
-  'Advanced Training',
-  'Palletizing Training',
-  'VX 500 Training',
-  'Welding Training',
+  'Basic Training', 'Advanced Training', 'Palletizing Training',
+  'VX 500 Training', 'Welding Training',
 ]
 
 const bgStyle = {
@@ -131,6 +128,7 @@ const bgStyle = {
 }
 
 type Registration = { company_name: string; country_region: string; training_sessions: string[] }
+type CertFile = { name: string; url: string }
 
 export default function Home() {
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
@@ -146,6 +144,14 @@ export default function Home() {
   const [sessionCount, setSessionCount] = useState(0)
   const [registrations, setRegistrations] = useState<Registration[]>([])
 
+  // 证书下载相关
+  const [showCertModal, setShowCertModal] = useState(false)
+  const [certPassword, setCertPassword] = useState('')
+  const [certError, setCertError] = useState('')
+  const [certFiles, setCertFiles] = useState<CertFile[]>([])
+  const [certLoading, setCertLoading] = useState(false)
+  const [certUnlocked, setCertUnlocked] = useState(false)
+
   useEffect(() => {
     fetch('/api/signup')
       .then(res => res.json())
@@ -156,6 +162,9 @@ export default function Home() {
     setSelectedKey(s.key)
     setMessage('')
     setError('')
+    setCertUnlocked(false)
+    setCertFiles([])
+    setCertPassword('')
     fetch(`/api/signup?month=${s.month}&session=${s.session}`)
       .then(res => res.json())
       .then(data => { setSessionCount(data.count); setRegistrations(data.registrations ?? []) })
@@ -196,31 +205,44 @@ export default function Home() {
     }
   }
 
+  const handleCertUnlock = async () => {
+    const sel = SESSIONS.find(s => s.key === selectedKey)!
+    setCertLoading(true)
+    setCertError('')
+    const res = await fetch('/api/certificates', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: certPassword, month: sel.month, session: sel.session })
+    })
+    const data = await res.json()
+    setCertLoading(false)
+    if (res.ok) {
+      setCertFiles(data.files)
+      setCertUnlocked(true)
+      setCertError('')
+    } else {
+      setCertError('Wrong password, please try again.')
+    }
+  }
+
   const inputClass = "w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 bg-white"
   const labelClass = "block text-sm font-medium text-gray-700 mb-1"
   const sel = SESSIONS.find(s => s.key === selectedKey)
   const months = ['May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
-  // 首页
   if (!selectedKey) {
     return (
       <main className="min-h-screen flex flex-col items-center justify-center p-6 relative" style={bgStyle}>
         <div className="bg-white/85 backdrop-blur-sm rounded-3xl p-8 w-full max-w-4xl shadow-xl">
           <h1 className="text-3xl font-bold text-gray-900 mb-1 text-center">Training Registration 2026</h1>
           <p className="text-gray-500 mb-4 text-center text-sm">Select a session to register for your training</p>
-
-          {/* 下载按钮 */}
           <div className="flex justify-center mb-8">
-            
-              href="https://dobotrobots999-my.sharepoint.com/:f:/g/personal/alexander_hou_dobot-global_com/IgBd4kVtMsmgRackj8Av8458ASfq_TldoI51Nwd8J_TlAM4?e=eajhQS"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-6 py-3 rounded-xl shadow-md transition"
-            >
+            <a href="https://dobotrobots999-my.sharepoint.com/:f:/g/personal/alexander_hou_dobot-global_com/IgBd4kVtMsmgRackj8Av8458ASfq_TldoI51Nwd8J_TlAM4?e=eajhQS"
+              target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-6 py-3 rounded-xl shadow-md transition">
               📥 Download Training Materials
             </a>
           </div>
-
           <div className="space-y-6">
             {months.map(month => {
               const monthSessions = SESSIONS.filter(s => s.label.startsWith(month))
@@ -271,12 +293,18 @@ export default function Home() {
     )
   }
 
-  // 报名表
   return (
     <main className="min-h-screen flex items-start justify-center p-6 relative" style={bgStyle}>
       <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-xl my-6">
         <button onClick={() => setSelectedKey(null)} className="text-blue-500 text-sm mb-4 hover:underline">← Back to sessions</button>
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">{sel?.label} – {sel?.sublabel}</h1>
+        <div className="flex items-start justify-between mb-1">
+          <h1 className="text-2xl font-bold text-gray-900">{sel?.label} – {sel?.sublabel}</h1>
+          {/* 证书下载按钮 */}
+          <button onClick={() => setShowCertModal(true)}
+            className="ml-3 shrink-0 inline-flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white text-xs font-semibold px-3 py-2 rounded-lg transition">
+            🎓 Certificate
+          </button>
+        </div>
         <p className="text-blue-600 text-sm font-medium mb-1">📅 {sel?.dates}</p>
 
         {/* 课程日程 */}
@@ -360,6 +388,58 @@ export default function Home() {
           </button>
         </div>
       </div>
+
+      {/* 证书下载弹窗 */}
+      {showCertModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-bold text-gray-900">🎓 Certificate Download</h2>
+              <button onClick={() => { setShowCertModal(false); setCertUnlocked(false); setCertPassword(''); setCertError('') }}
+                className="text-gray-400 hover:text-gray-600 text-xl">✕</button>
+            </div>
+
+            <p className="text-sm text-gray-500 mb-1">{sel?.label} – {sel?.sublabel}</p>
+            <p className="text-xs text-gray-400 mb-4">{sel?.dates}</p>
+
+            {!certUnlocked ? (
+              <>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Enter Password</label>
+                <input
+                  type="password"
+                  value={certPassword}
+                  onChange={e => setCertPassword(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && handleCertUnlock()}
+                  placeholder="Enter password to access certificates"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 mb-3"
+                />
+                {certError && <p className="text-red-500 text-sm mb-3">{certError}</p>}
+                <button onClick={handleCertUnlock} disabled={certLoading || !certPassword}
+                  className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold py-2.5 rounded-lg transition">
+                  {certLoading ? 'Verifying...' : 'Access Certificates'}
+                </button>
+              </>
+            ) : (
+              <>
+                {certFiles.length === 0 ? (
+                  <p className="text-gray-500 text-sm text-center py-4">No certificates available for this session yet.</p>
+                ) : (
+                  <div className="space-y-2">
+                    {certFiles.map((f, i) => (
+                      <a key={i} href={f.url} target="_blank" rel="noopener noreferrer"
+                        className="flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-green-50 border border-gray-200 hover:border-green-300 rounded-xl transition group">
+                        <span className="text-sm font-medium text-gray-700 group-hover:text-green-700">📄 {f.name}</span>
+                        <span className="text-xs text-green-600 font-semibold">Download ↓</span>
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       <p className="absolute bottom-3 right-4 text-white/60 text-xs">@ikun · Questions? <a href="mailto:hanyu.li@dobot-global.com" className="underline">hanyu.li@dobot-global.com</a></p>
     </main>
   )
