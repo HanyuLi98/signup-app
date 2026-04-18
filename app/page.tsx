@@ -199,15 +199,28 @@ export default function Home() {
   const inputClass = "w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 bg-white"
   const labelClass = "block text-sm font-medium text-gray-700 mb-1"
   const sel = SESSIONS.find(s => s.key === selectedKey)
+  const months = ['May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
   // 首页
   if (!selectedKey) {
-    const months = ['May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     return (
       <main className="min-h-screen flex flex-col items-center justify-center p-6 relative" style={bgStyle}>
         <div className="bg-white/85 backdrop-blur-sm rounded-3xl p-8 w-full max-w-4xl shadow-xl">
           <h1 className="text-3xl font-bold text-gray-900 mb-1 text-center">Training Registration 2026</h1>
-          <p className="text-gray-500 mb-8 text-center text-sm">Select a session to register for your training</p>
+          <p className="text-gray-500 mb-4 text-center text-sm">Select a session to register for your training</p>
+
+          {/* 下载按钮 */}
+          <div className="flex justify-center mb-8">
+            
+              href="https://dobotrobots999-my.sharepoint.com/:f:/g/personal/alexander_hou_dobot-global_com/IgBd4kVtMsmgRackj8Av8458ASfq_TldoI51Nwd8J_TlAM4?e=eajhQS"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-6 py-3 rounded-xl shadow-md transition"
+            >
+              📥 Download Training Materials
+            </a>
+          </div>
+
           <div className="space-y-6">
             {months.map(month => {
               const monthSessions = SESSIONS.filter(s => s.label.startsWith(month))
