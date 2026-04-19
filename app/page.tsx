@@ -122,9 +122,7 @@ const trainingOptions = [
 ]
 
 const bgStyle = {
-  backgroundImage: "url('/Background_EMEA.png')",
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
+  background: 'linear-gradient(135deg, #dbeafe 0%, #ede9fe 50%, #dbeafe 100%)',
 }
 
 type Registration = { company_name: string; country_region: string; training_sessions: string[] }
@@ -155,8 +153,6 @@ export default function Home() {
   const [sessionCount, setSessionCount] = useState(0)
   const [registrations, setRegistrations] = useState<Registration[]>([])
   const [emailPreview, setEmailPreview] = useState<EmailPreview | null>(null)
-
-  // 证书下载
   const [showCertModal, setShowCertModal] = useState(false)
   const [certPassword, setCertPassword] = useState('')
   const [certError, setCertError] = useState('')
@@ -237,17 +233,25 @@ export default function Home() {
   const months = ['May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
   const watermark = (
-    <p className="absolute bottom-4 right-5 text-white/90 text-sm font-medium drop-shadow">
-      @ikun · Questions? <a href="mailto:hanyu.li@dobot-global.com" className="underline">hanyu.li@dobot-global.com</a>
-    </p>
+    <div className="fixed bottom-4 right-5 text-gray-600 text-base font-medium drop-shadow z-10">
+      @ikun · Questions? <a href="mailto:hanyu.li@dobot-global.com" className="underline text-blue-700">hanyu.li@dobot-global.com</a>
+    </div>
   )
 
   if (!selectedKey) {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center p-6 relative" style={bgStyle}>
-        <div className="bg-white/85 backdrop-blur-sm rounded-3xl p-8 w-full max-w-5xl shadow-xl">
-          <h1 className="text-3xl font-bold text-gray-900 mb-1 text-center">Training Registration 2026</h1>
-          <p className="text-gray-500 mb-4 text-center text-sm">Select a session to register for your training</p>
+      <main className="min-h-screen flex flex-col items-center justify-center p-6" style={bgStyle}>
+        <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 w-full max-w-5xl shadow-xl">
+
+          {/* Logo + 标题 */}
+          <div className="flex flex-col items-center mb-8">
+            <img src="/Background_EMEA.png" alt="Dobot Logo" className="h-14 mb-3" />
+            <p className="text-blue-700 font-bold text-xl tracking-widest uppercase">Dobot EMEA</p>
+            <h1 className="text-3xl font-bold text-gray-900 mt-3 mb-1 text-center">Training Registration 2026</h1>
+            <p className="text-gray-500 text-sm text-center">Select a session to register for your training</p>
+          </div>
+
+          {/* 下载按钮 */}
           <div className="flex justify-center mb-8">
             <a href="https://dobotrobots999-my.sharepoint.com/:f:/g/personal/alexander_hou_dobot-global_com/IgBd4kVtMsmgRackj8Av8458ASfq_TldoI51Nwd8J_TlAM4?e=eajhQS"
               target="_blank" rel="noopener noreferrer"
@@ -255,19 +259,23 @@ export default function Home() {
               📥 Download Training Materials
             </a>
           </div>
+
+          {/* 场次列表 */}
           <div className="space-y-6">
             {months.map(month => {
               const monthSessions = SESSIONS.filter(s => s.label.startsWith(month))
               return (
                 <div key={month}>
-                  <h2 className="text-base font-semibold text-gray-600 mb-3 border-b pb-1">{month} 2026</h2>
+                  <h2 className="text-base font-semibold text-gray-600 mb-3 border-b border-gray-200 pb-1">{month} 2026</h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {monthSessions.map(s => {
                       const count = counts[s.key] ?? 0
                       const full = count >= max
                       return (
                         <button key={s.key} onClick={() => !full && handleSelect(s)} disabled={full}
-                          className={`rounded-2xl p-5 text-left shadow transition-all border-2 ${full ? 'bg-gray-100 border-gray-200 cursor-not-allowed opacity-60' : 'bg-white border-transparent hover:border-blue-500 hover:shadow-lg'}`}>
+                          className={`rounded-2xl p-5 text-left shadow transition-all border-2 ${full
+                            ? 'bg-gray-100 border-gray-200 cursor-not-allowed opacity-60'
+                            : 'bg-white border-transparent hover:border-blue-500 hover:shadow-lg'}`}>
                           <div className="flex items-center justify-between mb-2">
                             <span className="font-semibold text-gray-800">{s.sublabel}</span>
                             <span className={`text-xs font-medium px-2 py-1 rounded-full ${full ? 'bg-red-100 text-red-500' : 'bg-green-100 text-green-600'}`}>
@@ -278,7 +286,7 @@ export default function Home() {
                           <div className="space-y-1 mb-3">
                             {s.schedule.map((d, i) => (
                               <div key={i} className="flex gap-2 text-xs text-gray-500">
-                                <span className="w-12 shrink-0 font-medium">{d.day}</span>
+                                <span className="w-12 shrink-0 font-medium text-gray-700">{d.day}</span>
                                 <span className="w-16 shrink-0">{d.date}</span>
                                 <span>{d.training}</span>
                               </div>
@@ -289,7 +297,8 @@ export default function Home() {
                             <span className="text-xs text-gray-400">spots filled</span>
                           </div>
                           <div className="mt-2 w-full bg-gray-200 rounded-full h-1.5">
-                            <div className={`h-1.5 rounded-full ${full ? 'bg-red-400' : 'bg-blue-500'}`} style={{ width: `${(count / max) * 100}%` }} />
+                            <div className={`h-1.5 rounded-full ${full ? 'bg-red-400' : 'bg-blue-500'}`}
+                              style={{ width: `${(count / max) * 100}%` }} />
                           </div>
                         </button>
                       )
@@ -305,10 +314,10 @@ export default function Home() {
     )
   }
 
-  // 注册成功后显示邮件预览
+  // 注册成功页面
   if (emailPreview) {
     return (
-      <main className="min-h-screen flex items-start justify-center p-6 relative" style={bgStyle}>
+      <main className="min-h-screen flex items-start justify-center p-6" style={bgStyle}>
         <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-xl my-6">
           <div className="text-center mb-6">
             <div className="text-4xl mb-2">🎉</div>
@@ -319,7 +328,6 @@ export default function Home() {
 
           <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100 text-sm">
             <h2 className="font-bold text-gray-800 mb-4 text-base">📧 Email Summary</h2>
-
             <div className="space-y-2 mb-4">
               <div className="flex gap-2"><span className="text-gray-400 w-32 shrink-0">Session</span><span className="font-medium">{emailPreview.sessionLabel}</span></div>
               <div className="flex gap-2"><span className="text-gray-400 w-32 shrink-0">Dates</span><span className="font-medium">{emailPreview.dates}</span></div>
@@ -371,8 +379,9 @@ export default function Home() {
     )
   }
 
+  // 报名表页面
   return (
-    <main className="min-h-screen flex items-start justify-center p-6 relative" style={bgStyle}>
+    <main className="min-h-screen flex items-start justify-center p-6" style={bgStyle}>
       <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-xl my-6">
         <button onClick={() => setSelectedKey(null)} className="text-blue-500 text-sm mb-4 hover:underline">← Back to sessions</button>
         <div className="flex items-center justify-between mb-1">
@@ -384,6 +393,7 @@ export default function Home() {
         </div>
         <p className="text-blue-600 text-sm font-medium mb-3">📅 {sel?.dates}</p>
 
+        {/* 课程日程 */}
         <div className="bg-blue-50 rounded-xl p-4 mb-4">
           <p className="text-xs font-semibold text-blue-700 mb-2 uppercase tracking-wide">Training Schedule</p>
           <div className="space-y-1">
@@ -397,12 +407,14 @@ export default function Home() {
           </div>
         </div>
 
+        {/* 名额 */}
         <div className="text-center mb-4">
           <span className={`text-lg font-bold ${sessionCount >= max ? 'text-red-500' : 'text-blue-600'}`}>{sessionCount} / {max}</span>
           <span className="text-gray-500 ml-2 text-sm">spots filled</span>
           {sessionCount >= max && <p className="text-red-500 mt-1 text-sm">Registration is full</p>}
         </div>
 
+        {/* 已注册公司 */}
         {registrations.length > 0 && (
           <div className="mb-6 border border-gray-100 rounded-xl overflow-hidden">
             <div className="bg-gray-50 px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide">Registered Companies</div>
@@ -462,6 +474,7 @@ export default function Home() {
         </div>
       </div>
 
+      {/* 证书下载弹窗 */}
       {showCertModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md">
@@ -472,7 +485,6 @@ export default function Home() {
             </div>
             <p className="text-sm text-gray-500 mb-1">{sel?.label} – {sel?.sublabel}</p>
             <p className="text-xs text-gray-400 mb-4">{sel?.dates}</p>
-
             {!certUnlocked ? (
               <>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Enter Password</label>
