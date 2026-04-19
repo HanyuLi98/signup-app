@@ -129,6 +129,18 @@ const bgStyle = {
 
 type Registration = { company_name: string; country_region: string; training_sessions: string[] }
 type CertFile = { name: string; url: string }
+type EmailPreview = {
+  to: string
+  sessionLabel: string
+  dates: string
+  name: string
+  companyName: string
+  countryRegion: string
+  jobTitle: string
+  telephone: string
+  trainingSessions: string[]
+  schedule: { day: string; date: string; training: string }[]
+}
 
 export default function Home() {
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
@@ -139,10 +151,12 @@ export default function Home() {
     jobResponsibilities: '', trainingSessions: [] as string[], email: '', telephone: '',
   })
   const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState('')
   const [error, setError] = useState('')
   const [sessionCount, setSessionCount] = useState(0)
   const [registrations, setRegistrations] = useState<Registration[]>([])
+  const [emailPreview, setEmailPreview] = useState<EmailPreview | null>(null)
+
+  // 证书下载
   const [showCertModal, setShowCertModal] = useState(false)
   const [certPassword, setCertPassword] = useState('')
   const [certError, setCertError] = useState('')
@@ -158,8 +172,8 @@ export default function Home() {
 
   const handleSelect = (s: typeof SESSIONS[0]) => {
     setSelectedKey(s.key)
-    setMessage('')
     setError('')
+    setEmailPreview(null)
     setCertUnlocked(false)
     setCertFiles([])
     setCertPassword('')
@@ -183,7 +197,7 @@ export default function Home() {
       setError('Please fill in all fields'); return
     }
     if (trainingSessions.length === 0) { setError('Please select at least one training session'); return }
-    setLoading(true); setError(''); setMessage('')
+    setLoading(true); setError('')
     const sel = SESSIONS.find(s => s.key === selectedKey)!
     const res = await fetch('/api/signup', {
       method: 'POST',
@@ -193,7 +207,7 @@ export default function Home() {
     const data = await res.json()
     setLoading(false)
     if (res.ok) {
-      setMessage('🎉 Registration successful! A confirmation email has been sent to your inbox. Please also check your spam / junk folder if you do not see it.')
+      setEmailPreview(data.emailPreview)
       setSessionCount(c => c + 1)
       setCounts(prev => ({ ...prev, [selectedKey!]: (prev[selectedKey!] ?? 0) + 1 }))
       setRegistrations(prev => [...prev, { company_name: form.companyName, country_region: form.countryRegion, training_sessions: form.trainingSessions }])
@@ -205,8 +219,7 @@ export default function Home() {
 
   const handleCertUnlock = async () => {
     const sel = SESSIONS.find(s => s.key === selectedKey)!
-    setCertLoading(true)
-    setCertError('')
+    setCertLoading(true); setCertError('')
     const res = await fetch('/api/certificates', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -214,12 +227,8 @@ export default function Home() {
     })
     const data = await res.json()
     setCertLoading(false)
-    if (res.ok) {
-      setCertFiles(data.files)
-      setCertUnlocked(true)
-    } else {
-      setCertError('Wrong password, please try again.')
-    }
+    if (res.ok) { setCertFiles(data.files); setCertUnlocked(true) }
+    else { setCertError('Wrong password, please try again.') }
   }
 
   const inputClass = "w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 bg-white"
@@ -290,6 +299,72 @@ export default function Home() {
               )
             })}
           </div>
+        </div>
+        {watermark}
+      </main>
+    )
+  }
+
+  // 注册成功后显示邮件预览
+  if (emailPreview) {
+    return (
+      <main className="min-h-screen flex items-start justify-center p-6 relative" style={bgStyle}>
+        <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-xl my-6">
+          <div className="text-center mb-6">
+            <div className="text-4xl mb-2">🎉</div>
+            <h1 className="text-2xl font-bold text-green-600">Registration Successful!</h1>
+            <p className="text-gray-500 text-sm mt-1">A confirmation email has been sent to <strong>{emailPreview.to}</strong></p>
+            <p className="text-orange-500 text-xs mt-1">⚠️ Please also check your spam / junk folder if you don't see it.</p>
+          </div>
+
+          <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100 text-sm">
+            <h2 className="font-bold text-gray-800 mb-4 text-base">📧 Email Summary</h2>
+
+            <div className="space-y-2 mb-4">
+              <div className="flex gap-2"><span className="text-gray-400 w-32 shrink-0">Session</span><span className="font-medium">{emailPreview.sessionLabel}</span></div>
+              <div className="flex gap-2"><span className="text-gray-400 w-32 shrink-0">Dates</span><span className="font-medium">{emailPreview.dates}</span></div>
+              <div className="flex gap-2"><span className="text-gray-400 w-32 shrink-0">Name</span><span className="font-medium">{emailPreview.name}</span></div>
+              <div className="flex gap-2"><span className="text-gray-400 w-32 shrink-0">Company</span><span className="font-medium">{emailPreview.companyName}</span></div>
+              <div className="flex gap-2"><span className="text-gray-400 w-32 shrink-0">Country</span><span className="font-medium">{emailPreview.countryRegion}</span></div>
+              <div className="flex gap-2"><span className="text-gray-400 w-32 shrink-0">Job Title</span><span className="font-medium">{emailPreview.jobTitle}</span></div>
+              <div className="flex gap-2"><span className="text-gray-400 w-32 shrink-0">Telephone</span><span className="font-medium">{emailPreview.telephone}</span></div>
+            </div>
+
+            <div className="mb-4">
+              <p className="text-gray-400 mb-1">Registered Sessions</p>
+              <div className="flex flex-wrap gap-1">
+                {emailPreview.trainingSessions.map((t, i) => (
+                  <span key={i} className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">{t}</span>
+                ))}
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <p className="text-gray-400 mb-2">Training Schedule</p>
+              <div className="space-y-1">
+                {emailPreview.schedule.map((d, i) => (
+                  <div key={i} className="flex gap-3 text-xs">
+                    <span className="w-12 font-semibold text-gray-700">{d.day}</span>
+                    <span className="w-14 text-gray-500">{d.date}</span>
+                    <span className="text-gray-700">{d.training}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="border-t pt-3 text-xs text-gray-500 space-y-1">
+              <p>🕘 Morning: 09:30–12:00 | Lunch: 12:00–13:00 | Afternoon: 13:00–17:00</p>
+              <p>📍 Dobot Europe GmbH, Werner-Heisenberg-Str. 2A, 63263 Neu-Isenburg, Germany</p>
+              <p>💻 Please bring your own laptop</p>
+              <p>🍱 Soft drinks, snacks and lunch provided by Dobot</p>
+              <p>🚗 Travel & accommodation to be arranged by the customer</p>
+            </div>
+          </div>
+
+          <button onClick={() => { setEmailPreview(null); setSelectedKey(null) }}
+            className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition">
+            ← Back to Sessions
+          </button>
         </div>
         {watermark}
       </main>
@@ -379,7 +454,6 @@ export default function Home() {
             <input type="tel" value={form.telephone} onChange={e => setForm({...form, telephone: e.target.value})} placeholder="+49 ..." className={inputClass} /></div>
 
           {error && <p className="text-red-500 text-sm">{error}</p>}
-          {message && <p className="text-green-600 text-sm font-medium">{message}</p>}
 
           <button onClick={handleSubmit} disabled={loading || sessionCount >= max}
             className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 rounded-lg transition text-base">
@@ -388,7 +462,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 证书下载弹窗 */}
       {showCertModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md">
