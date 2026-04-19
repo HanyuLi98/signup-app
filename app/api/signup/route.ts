@@ -49,14 +49,15 @@ export async function GET(req: Request) {
   ]
   const counts: Record<string, number> = {}
   for (const s of sessions) {
-    const [m, , sess] = s.split('-S')
-    const { count } = await supabase
-      .from('signups')
-      .select('*', { count: 'exact', head: true })
-      .eq('month', s.slice(0, 7))
-      .eq('session', `S${sess}`)
-    counts[s] = count ?? 0
-  }
+  const month = s.slice(0, 7)        // "2026-05"
+  const session = s.slice(8)          // "S1" 或 "S2"
+  const { count } = await supabase
+    .from('signups')
+    .select('*', { count: 'exact', head: true })
+    .eq('month', month)
+    .eq('session', session)
+  counts[s] = count ?? 0
+}
   return NextResponse.json({ counts, max: MAX_SLOTS })
 }
 
