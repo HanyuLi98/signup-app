@@ -30,33 +30,33 @@ const SESSIONS = [
       { day: 'Day 3', date: 'Jun 25', training: 'VX 500 + Palletizing' },
       { day: 'Day 4', date: 'Jun 26', training: 'Welding Training' },
     ]},
-  { key: '2026-07-S1', month: '2026-07', session: 'S1', label: 'July 2026', sublabel: 'Session 1', dates: 'Jul 14–17, 2026',
+  { key: '2026-07-S1', month: '2026-07', session: 'S1', label: 'July 2026', sublabel: 'Session 1', dates: 'Jul 7–10, 2026',
     schedule: [
-      { day: 'Day 1', date: 'Jul 14', training: 'Basic Training' },
-      { day: 'Day 2', date: 'Jul 15', training: 'Advanced Training' },
-      { day: 'Day 3', date: 'Jul 16', training: 'VX 500 + Palletizing' },
-      { day: 'Day 4', date: 'Jul 17', training: 'Welding Training' },
+      { day: 'Day 1', date: 'Jul 7', training: 'Basic Training' },
+      { day: 'Day 2', date: 'Jul 8', training: 'Advanced Training' },
+      { day: 'Day 3', date: 'Jul 9', training: 'VX 500 + Palletizing' },
+      { day: 'Day 4', date: 'Jul 10', training: 'Welding Training' },
     ]},
-  { key: '2026-07-S2', month: '2026-07', session: 'S2', label: 'July 2026', sublabel: 'Session 2', dates: 'Jul 28–31, 2026',
+  { key: '2026-07-S2', month: '2026-07', session: 'S2', label: 'July 2026', sublabel: 'Session 2', dates: 'Jul 21–24, 2026',
     schedule: [
-      { day: 'Day 1', date: 'Jul 28', training: 'Basic Training' },
-      { day: 'Day 2', date: 'Jul 29', training: 'Advanced Training' },
-      { day: 'Day 3', date: 'Jul 30', training: 'VX 500 + Palletizing' },
-      { day: 'Day 4', date: 'Jul 31', training: 'Welding Training' },
+      { day: 'Day 1', date: 'Jul 21', training: 'Basic Training' },
+      { day: 'Day 2', date: 'Jul 22', training: 'Advanced Training' },
+      { day: 'Day 3', date: 'Jul 23', training: 'VX 500 + Palletizing' },
+      { day: 'Day 4', date: 'Jul 24', training: 'Welding Training' },
     ]},
-  { key: '2026-08-S1', month: '2026-08', session: 'S1', label: 'August 2026', sublabel: 'Session 1', dates: 'Aug 11–14, 2026',
+  { key: '2026-08-S1', month: '2026-08', session: 'S1', label: 'August 2026', sublabel: 'Session 1', dates: 'Aug 4–7, 2026',
     schedule: [
-      { day: 'Day 1', date: 'Aug 11', training: 'Basic Training' },
-      { day: 'Day 2', date: 'Aug 12', training: 'Advanced Training' },
-      { day: 'Day 3', date: 'Aug 13', training: 'VX 500 + Palletizing' },
-      { day: 'Day 4', date: 'Aug 14', training: 'Welding Training' },
+      { day: 'Day 1', date: 'Aug 4', training: 'Basic Training' },
+      { day: 'Day 2', date: 'Aug 5', training: 'Advanced Training' },
+      { day: 'Day 3', date: 'Aug 6', training: 'VX 500 + Palletizing' },
+      { day: 'Day 4', date: 'Aug 7', training: 'Welding Training' },
     ]},
-  { key: '2026-08-S2', month: '2026-08', session: 'S2', label: 'August 2026', sublabel: 'Session 2', dates: 'Aug 25–28, 2026',
+  { key: '2026-08-S2', month: '2026-08', session: 'S2', label: 'August 2026', sublabel: 'Session 2', dates: 'Aug 18–21, 2026',
     schedule: [
-      { day: 'Day 1', date: 'Aug 25', training: 'Basic Training' },
-      { day: 'Day 2', date: 'Aug 26', training: 'Advanced Training' },
-      { day: 'Day 3', date: 'Aug 27', training: 'VX 500 + Palletizing' },
-      { day: 'Day 4', date: 'Aug 28', training: 'Welding Training' },
+      { day: 'Day 1', date: 'Aug 18', training: 'Basic Training' },
+      { day: 'Day 2', date: 'Aug 19', training: 'Advanced Training' },
+      { day: 'Day 3', date: 'Aug 20', training: 'VX 500 + Palletizing' },
+      { day: 'Day 4', date: 'Aug 21', training: 'Welding Training' },
     ]},
   { key: '2026-09-S1', month: '2026-09', session: 'S1', label: 'September 2026', sublabel: 'Session 1', dates: 'Sep 8–11, 2026',
     schedule: [
@@ -72,26 +72,26 @@ const SESSIONS = [
       { day: 'Day 3', date: 'Sep 24', training: 'VX 500 + Palletizing' },
       { day: 'Day 4', date: 'Sep 25', training: 'Welding Training' },
     ]},
-  { key: '2026-10-S1', month: '2026-10', session: 'S1', label: 'October 2026', sublabel: 'Session 1', dates: 'Oct 13–16, 2026',
+  { key: '2026-10-S1', month: '2026-10', session: 'S1', label: 'October 2026', sublabel: 'Session 1', dates: 'Oct 6–9, 2026',
     schedule: [
-      { day: 'Day 1', date: 'Oct 13', training: 'Basic Training' },
-      { day: 'Day 2', date: 'Oct 14', training: 'Advanced Training' },
-      { day: 'Day 3', date: 'Oct 15', training: 'VX 500 + Palletizing' },
-      { day: 'Day 4', date: 'Oct 16', training: 'Welding Training' },
+      { day: 'Day 1', date: 'Oct 6', training: 'Basic Training' },
+      { day: 'Day 2', date: 'Oct 7', training: 'Advanced Training' },
+      { day: 'Day 3', date: 'Oct 8', training: 'VX 500 + Palletizing' },
+      { day: 'Day 4', date: 'Oct 9', training: 'Welding Training' },
     ]},
-  { key: '2026-10-S2', month: '2026-10', session: 'S2', label: 'October 2026', sublabel: 'Session 2', dates: 'Oct 27–30, 2026',
+  { key: '2026-10-S2', month: '2026-10', session: 'S2', label: 'October 2026', sublabel: 'Session 2', dates: 'Oct 20–23, 2026',
     schedule: [
-      { day: 'Day 1', date: 'Oct 27', training: 'Basic Training' },
-      { day: 'Day 2', date: 'Oct 28', training: 'Advanced Training' },
-      { day: 'Day 3', date: 'Oct 29', training: 'VX 500 + Palletizing' },
-      { day: 'Day 4', date: 'Oct 30', training: 'Welding Training' },
+      { day: 'Day 1', date: 'Oct 20', training: 'Basic Training' },
+      { day: 'Day 2', date: 'Oct 21', training: 'Advanced Training' },
+      { day: 'Day 3', date: 'Oct 22', training: 'VX 500 + Palletizing' },
+      { day: 'Day 4', date: 'Oct 23', training: 'Welding Training' },
     ]},
-  { key: '2026-11-S1', month: '2026-11', session: 'S1', label: 'November 2026', sublabel: 'Session 1', dates: 'Nov 10–13, 2026',
+  { key: '2026-11-S1', month: '2026-11', session: 'S1', label: 'November 2026', sublabel: 'Session 1', dates: 'Nov 3–6, 2026',
     schedule: [
-      { day: 'Day 1', date: 'Nov 10', training: 'Basic Training' },
-      { day: 'Day 2', date: 'Nov 11', training: 'Advanced Training' },
-      { day: 'Day 3', date: 'Nov 12', training: 'VX 500 + Palletizing' },
-      { day: 'Day 4', date: 'Nov 13', training: 'Welding Training' },
+      { day: 'Day 1', date: 'Nov 3', training: 'Basic Training' },
+      { day: 'Day 2', date: 'Nov 4', training: 'Advanced Training' },
+      { day: 'Day 3', date: 'Nov 5', training: 'VX 500 + Palletizing' },
+      { day: 'Day 4', date: 'Nov 6', training: 'Welding Training' },
     ]},
   { key: '2026-11-S2', month: '2026-11', session: 'S2', label: 'November 2026', sublabel: 'Session 2', dates: 'Nov 24–27, 2026',
     schedule: [
@@ -107,12 +107,12 @@ const SESSIONS = [
       { day: 'Day 3', date: 'Dec 10', training: 'VX 500 + Palletizing' },
       { day: 'Day 4', date: 'Dec 11', training: 'Welding Training' },
     ]},
-  { key: '2026-12-S2', month: '2026-12', session: 'S2', label: 'December 2026', sublabel: 'Session 2', dates: 'Dec 22–25, 2026',
+  { key: '2026-12-S2', month: '2026-12', session: 'S2', label: 'December 2026', sublabel: 'Session 2', dates: 'Dec 15–18, 2026',
     schedule: [
-      { day: 'Day 1', date: 'Dec 22', training: 'Basic Training' },
-      { day: 'Day 2', date: 'Dec 23', training: 'Advanced Training' },
-      { day: 'Day 3', date: 'Dec 24', training: 'VX 500 + Palletizing' },
-      { day: 'Day 4', date: 'Dec 25', training: 'Welding Training' },
+      { day: 'Day 1', date: 'Dec 15', training: 'Basic Training' },
+      { day: 'Day 2', date: 'Dec 16', training: 'Advanced Training' },
+      { day: 'Day 3', date: 'Dec 17', training: 'VX 500 + Palletizing' },
+      { day: 'Day 4', date: 'Dec 18', training: 'Welding Training' },
     ]},
 ]
 
@@ -242,16 +242,12 @@ export default function Home() {
     return (
       <main className="min-h-screen flex flex-col items-center justify-center p-6" style={bgStyle}>
         <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 w-full max-w-5xl shadow-xl">
-
-          {/* Logo + 标题 */}
           <div className="flex flex-col items-center mb-8">
             <img src="/Background_EMEA.png" alt="Dobot Logo" className="h-14 mb-3" />
             <p className="text-blue-700 font-bold text-xl tracking-widest uppercase">Dobot EMEA</p>
             <h1 className="text-3xl font-bold text-gray-900 mt-3 mb-1 text-center">Training Registration 2026</h1>
             <p className="text-gray-500 text-sm text-center">Select a session to register for your training</p>
           </div>
-
-          {/* 下载按钮 */}
           <div className="flex justify-center mb-8">
             <a href="https://dobotrobots999-my.sharepoint.com/:f:/g/personal/alexander_hou_dobot-global_com/IgBd4kVtMsmgRackj8Av8458ASfq_TldoI51Nwd8J_TlAM4?e=eajhQS"
               target="_blank" rel="noopener noreferrer"
@@ -259,8 +255,6 @@ export default function Home() {
               📥 Download Training Materials
             </a>
           </div>
-
-          {/* 场次列表 */}
           <div className="space-y-6">
             {months.map(month => {
               const monthSessions = SESSIONS.filter(s => s.label.startsWith(month))
@@ -314,7 +308,6 @@ export default function Home() {
     )
   }
 
-  // 注册成功页面
   if (emailPreview) {
     return (
       <main className="min-h-screen flex items-start justify-center p-6" style={bgStyle}>
@@ -325,7 +318,6 @@ export default function Home() {
             <p className="text-gray-500 text-sm mt-1">A confirmation email has been sent to <strong>{emailPreview.to}</strong></p>
             <p className="text-orange-500 text-xs mt-1">⚠️ Please also check your spam / junk folder if you don't see it.</p>
           </div>
-
           <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100 text-sm">
             <h2 className="font-bold text-gray-800 mb-4 text-base">📧 Email Summary</h2>
             <div className="space-y-2 mb-4">
@@ -337,7 +329,6 @@ export default function Home() {
               <div className="flex gap-2"><span className="text-gray-400 w-32 shrink-0">Job Title</span><span className="font-medium">{emailPreview.jobTitle}</span></div>
               <div className="flex gap-2"><span className="text-gray-400 w-32 shrink-0">Telephone</span><span className="font-medium">{emailPreview.telephone}</span></div>
             </div>
-
             <div className="mb-4">
               <p className="text-gray-400 mb-1">Registered Sessions</p>
               <div className="flex flex-wrap gap-1">
@@ -346,7 +337,6 @@ export default function Home() {
                 ))}
               </div>
             </div>
-
             <div className="mb-4">
               <p className="text-gray-400 mb-2">Training Schedule</p>
               <div className="space-y-1">
@@ -359,7 +349,6 @@ export default function Home() {
                 ))}
               </div>
             </div>
-
             <div className="border-t pt-3 text-xs text-gray-500 space-y-1">
               <p>🕘 Morning: 09:30–12:00 | Lunch: 12:00–13:00 | Afternoon: 13:00–17:00</p>
               <p>📍 Dobot Europe GmbH, Werner-Heisenberg-Str. 2A, 63263 Neu-Isenburg, Germany</p>
@@ -368,7 +357,6 @@ export default function Home() {
               <p>🚗 Travel & accommodation to be arranged by the customer</p>
             </div>
           </div>
-
           <button onClick={() => { setEmailPreview(null); setSelectedKey(null) }}
             className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition">
             ← Back to Sessions
@@ -379,7 +367,6 @@ export default function Home() {
     )
   }
 
-  // 报名表页面
   return (
     <main className="min-h-screen flex items-start justify-center p-6" style={bgStyle}>
       <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-xl my-6">
@@ -392,8 +379,6 @@ export default function Home() {
           </button>
         </div>
         <p className="text-blue-600 text-sm font-medium mb-3">📅 {sel?.dates}</p>
-
-        {/* 课程日程 */}
         <div className="bg-blue-50 rounded-xl p-4 mb-4">
           <p className="text-xs font-semibold text-blue-700 mb-2 uppercase tracking-wide">Training Schedule</p>
           <div className="space-y-1">
@@ -406,15 +391,11 @@ export default function Home() {
             ))}
           </div>
         </div>
-
-        {/* 名额 */}
         <div className="text-center mb-4">
           <span className={`text-lg font-bold ${sessionCount >= max ? 'text-red-500' : 'text-blue-600'}`}>{sessionCount} / {max}</span>
           <span className="text-gray-500 ml-2 text-sm">spots filled</span>
           {sessionCount >= max && <p className="text-red-500 mt-1 text-sm">Registration is full</p>}
         </div>
-
-        {/* 已注册公司 */}
         {registrations.length > 0 && (
           <div className="mb-6 border border-gray-100 rounded-xl overflow-hidden">
             <div className="bg-gray-50 px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide">Registered Companies</div>
@@ -435,7 +416,6 @@ export default function Home() {
             </div>
           </div>
         )}
-
         <div className="space-y-4">
           <div><label className={labelClass}>Company Name <span className="text-red-500">*</span></label>
             <input type="text" value={form.companyName} onChange={e => setForm({...form, companyName: e.target.value})} placeholder="Enter company name" className={inputClass} /></div>
@@ -464,17 +444,13 @@ export default function Home() {
             <input type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} placeholder="Enter email address" className={inputClass} /></div>
           <div><label className={labelClass}>Telephone Number <span className="text-red-500">*</span></label>
             <input type="tel" value={form.telephone} onChange={e => setForm({...form, telephone: e.target.value})} placeholder="+49 ..." className={inputClass} /></div>
-
           {error && <p className="text-red-500 text-sm">{error}</p>}
-
           <button onClick={handleSubmit} disabled={loading || sessionCount >= max}
             className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 rounded-lg transition text-base">
             {loading ? 'Submitting...' : 'Register Now'}
           </button>
         </div>
       </div>
-
-      {/* 证书下载弹窗 */}
       {showCertModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md">
