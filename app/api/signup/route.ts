@@ -45,7 +45,7 @@ export async function GET(req: Request) {
     '2026-09-S1', '2026-09-S2',
     '2026-10-S1', '2026-10-S2',
     '2026-11-S1', '2026-11-S2',
-    '2026-12-S1', '2026-12-S2',
+    '2026-12-S1',
   ]
   const counts: Record<string, number> = {}
   for (const s of sessions) {
@@ -184,12 +184,6 @@ export async function POST(req: Request) {
       { day: 'Day 2', date: 'Dec 9', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Dec 10', training: 'VX 500 Training + Palletizing Training' },
       { day: 'Day 4', date: 'Dec 11', training: 'Welding Training' },
-    ]},
-    '2026-12-S2': { label: 'December 2026 – Session 2', dates: 'Dec 15–18, 2026', schedule: [
-      { day: 'Day 1', date: 'Dec 15', training: 'Basic Training' },
-      { day: 'Day 2', date: 'Dec 16', training: 'Advanced Training' },
-      { day: 'Day 3', date: 'Dec 17', training: 'VX 500 Training + Palletizing Training' },
-      { day: 'Day 4', date: 'Dec 18', training: 'Welding Training' },
     ]},
   }
 

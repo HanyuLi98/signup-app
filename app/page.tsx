@@ -107,13 +107,6 @@ const SESSIONS = [
       { day: 'Day 3', date: 'Dec 10', training: 'VX 500 + Palletizing' },
       { day: 'Day 4', date: 'Dec 11', training: 'Welding Training' },
     ]},
-  { key: '2026-12-S2', month: '2026-12', session: 'S2', label: 'December 2026', sublabel: 'Session 2', dates: 'Dec 15–18, 2026',
-    schedule: [
-      { day: 'Day 1', date: 'Dec 15', training: 'Basic Training' },
-      { day: 'Day 2', date: 'Dec 16', training: 'Advanced Training' },
-      { day: 'Day 3', date: 'Dec 17', training: 'VX 500 + Palletizing' },
-      { day: 'Day 4', date: 'Dec 18', training: 'Welding Training' },
-    ]},
 ]
 
 const trainingOptions = [
