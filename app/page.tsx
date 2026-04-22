@@ -338,6 +338,9 @@ export default function Home() {
                 ))}
               </div>
             </div>
+
+
+
             <div className="border-t pt-3 text-xs text-gray-500 space-y-1">
               {emailPreview.isS2 ? (
                 <>
@@ -351,7 +354,14 @@ export default function Home() {
               <p>💻 Please bring your own laptop</p>
               <p>🍱 Soft drinks, snacks and lunch provided by Dobot</p>
               <p>🚗 Travel & accommodation to be arranged by the customer</p>
+              <p>📥 <strong>Software & Slides:</strong> <a href="https://dobotrobots999-my.sharepoint.com/:f:/g/personal/alexander_hou_dobot-global_com/IgDpZYhZJqWhS4Vf0yO6OHEWAdIOnSGpGXYqNDS1jOyDoMc?e=LecscN" className="text-blue-600 underline" target="_blank">Click here to download</a> (also available via the "Download Materials" button on the website)</p>
+              <p>❌ <strong>Cancellation:</strong> Please contact the person who shared your registration link. Cancel at least one week in advance if possible.</p>
             </div>
+
+
+
+
+
           </div>
           <button onClick={() => { setEmailPreview(null); setSelectedKey(null) }}
             className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition">
