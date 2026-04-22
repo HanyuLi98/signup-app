@@ -94,108 +94,117 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'This email has already been registered for this session' }, { status: 400 })
   }
 
-  const SESSION_INFO: Record<string, { label: string; dates: string; schedule: { day: string; date: string; training: string }[] }> = {
-    '2026-05-S1': { label: 'May 2026 – Session 1', dates: 'May 5–8, 2026', schedule: [
+  const isS2 = session === 'S2'
+
+  const SESSION_INFO: Record<string, { label: string; dates: string; schedule: { day: string; date: string; training: string; note?: string }[] }> = {
+    '2026-05-S1': { label: 'May 2026 – Session 1', dates: 'May 5–7, 2026', schedule: [
       { day: 'Day 1', date: 'May 5', training: 'Basic Training' },
       { day: 'Day 2', date: 'May 6', training: 'Advanced Training' },
       { day: 'Day 3', date: 'May 7', training: 'VX 500 Training + Palletizing Training' },
-      { day: 'Day 4', date: 'May 8', training: 'Welding Training' },
     ]},
     '2026-05-S2': { label: 'May 2026 – Session 2', dates: 'May 26–29, 2026', schedule: [
       { day: 'Day 1', date: 'May 26', training: 'Basic Training' },
       { day: 'Day 2', date: 'May 27', training: 'Advanced Training' },
       { day: 'Day 3', date: 'May 28', training: 'VX 500 Training + Palletizing Training' },
-      { day: 'Day 4', date: 'May 29', training: 'Welding Training' },
+      { day: 'Day 4', date: 'May 29', training: 'Welding Training', note: 'Morning only (09:30–12:00). Afternoon free.' },
     ]},
-    '2026-06-S1': { label: 'June 2026 – Session 1', dates: 'Jun 9–12, 2026', schedule: [
+    '2026-06-S1': { label: 'June 2026 – Session 1', dates: 'Jun 9–11, 2026', schedule: [
       { day: 'Day 1', date: 'Jun 9', training: 'Basic Training' },
       { day: 'Day 2', date: 'Jun 10', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Jun 11', training: 'VX 500 Training + Palletizing Training' },
-      { day: 'Day 4', date: 'Jun 12', training: 'Welding Training' },
     ]},
     '2026-06-S2': { label: 'June 2026 – Session 2', dates: 'Jun 23–26, 2026', schedule: [
       { day: 'Day 1', date: 'Jun 23', training: 'Basic Training' },
       { day: 'Day 2', date: 'Jun 24', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Jun 25', training: 'VX 500 Training + Palletizing Training' },
-      { day: 'Day 4', date: 'Jun 26', training: 'Welding Training' },
+      { day: 'Day 4', date: 'Jun 26', training: 'Welding Training', note: 'Morning only (09:30–12:00). Afternoon free.' },
     ]},
-    '2026-07-S1': { label: 'July 2026 – Session 1', dates: 'Jul 7–10, 2026', schedule: [
+    '2026-07-S1': { label: 'July 2026 – Session 1', dates: 'Jul 7–9, 2026', schedule: [
       { day: 'Day 1', date: 'Jul 7', training: 'Basic Training' },
       { day: 'Day 2', date: 'Jul 8', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Jul 9', training: 'VX 500 Training + Palletizing Training' },
-      { day: 'Day 4', date: 'Jul 10', training: 'Welding Training' },
     ]},
     '2026-07-S2': { label: 'July 2026 – Session 2', dates: 'Jul 21–24, 2026', schedule: [
       { day: 'Day 1', date: 'Jul 21', training: 'Basic Training' },
       { day: 'Day 2', date: 'Jul 22', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Jul 23', training: 'VX 500 Training + Palletizing Training' },
-      { day: 'Day 4', date: 'Jul 24', training: 'Welding Training' },
+      { day: 'Day 4', date: 'Jul 24', training: 'Welding Training', note: 'Morning only (09:30–12:00). Afternoon free.' },
     ]},
-    '2026-08-S1': { label: 'August 2026 – Session 1', dates: 'Aug 4–7, 2026', schedule: [
+    '2026-08-S1': { label: 'August 2026 – Session 1', dates: 'Aug 4–6, 2026', schedule: [
       { day: 'Day 1', date: 'Aug 4', training: 'Basic Training' },
       { day: 'Day 2', date: 'Aug 5', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Aug 6', training: 'VX 500 Training + Palletizing Training' },
-      { day: 'Day 4', date: 'Aug 7', training: 'Welding Training' },
     ]},
     '2026-08-S2': { label: 'August 2026 – Session 2', dates: 'Aug 18–21, 2026', schedule: [
       { day: 'Day 1', date: 'Aug 18', training: 'Basic Training' },
       { day: 'Day 2', date: 'Aug 19', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Aug 20', training: 'VX 500 Training + Palletizing Training' },
-      { day: 'Day 4', date: 'Aug 21', training: 'Welding Training' },
+      { day: 'Day 4', date: 'Aug 21', training: 'Welding Training', note: 'Morning only (09:30–12:00). Afternoon free.' },
     ]},
-    '2026-09-S1': { label: 'September 2026 – Session 1', dates: 'Sep 8–11, 2026', schedule: [
+    '2026-09-S1': { label: 'September 2026 – Session 1', dates: 'Sep 8–10, 2026', schedule: [
       { day: 'Day 1', date: 'Sep 8', training: 'Basic Training' },
       { day: 'Day 2', date: 'Sep 9', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Sep 10', training: 'VX 500 Training + Palletizing Training' },
-      { day: 'Day 4', date: 'Sep 11', training: 'Welding Training' },
     ]},
     '2026-09-S2': { label: 'September 2026 – Session 2', dates: 'Sep 22–25, 2026', schedule: [
       { day: 'Day 1', date: 'Sep 22', training: 'Basic Training' },
       { day: 'Day 2', date: 'Sep 23', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Sep 24', training: 'VX 500 Training + Palletizing Training' },
-      { day: 'Day 4', date: 'Sep 25', training: 'Welding Training' },
+      { day: 'Day 4', date: 'Sep 25', training: 'Welding Training', note: 'Morning only (09:30–12:00). Afternoon free.' },
     ]},
-    '2026-10-S1': { label: 'October 2026 – Session 1', dates: 'Oct 6–9, 2026', schedule: [
+    '2026-10-S1': { label: 'October 2026 – Session 1', dates: 'Oct 6–8, 2026', schedule: [
       { day: 'Day 1', date: 'Oct 6', training: 'Basic Training' },
       { day: 'Day 2', date: 'Oct 7', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Oct 8', training: 'VX 500 Training + Palletizing Training' },
-      { day: 'Day 4', date: 'Oct 9', training: 'Welding Training' },
     ]},
     '2026-10-S2': { label: 'October 2026 – Session 2', dates: 'Oct 20–23, 2026', schedule: [
       { day: 'Day 1', date: 'Oct 20', training: 'Basic Training' },
       { day: 'Day 2', date: 'Oct 21', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Oct 22', training: 'VX 500 Training + Palletizing Training' },
-      { day: 'Day 4', date: 'Oct 23', training: 'Welding Training' },
+      { day: 'Day 4', date: 'Oct 23', training: 'Welding Training', note: 'Morning only (09:30–12:00). Afternoon free.' },
     ]},
-    '2026-11-S1': { label: 'November 2026 – Session 1', dates: 'Nov 3–6, 2026', schedule: [
+    '2026-11-S1': { label: 'November 2026 – Session 1', dates: 'Nov 3–5, 2026', schedule: [
       { day: 'Day 1', date: 'Nov 3', training: 'Basic Training' },
       { day: 'Day 2', date: 'Nov 4', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Nov 5', training: 'VX 500 Training + Palletizing Training' },
-      { day: 'Day 4', date: 'Nov 6', training: 'Welding Training' },
     ]},
     '2026-11-S2': { label: 'November 2026 – Session 2', dates: 'Nov 24–27, 2026', schedule: [
       { day: 'Day 1', date: 'Nov 24', training: 'Basic Training' },
       { day: 'Day 2', date: 'Nov 25', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Nov 26', training: 'VX 500 Training + Palletizing Training' },
-      { day: 'Day 4', date: 'Nov 27', training: 'Welding Training' },
+      { day: 'Day 4', date: 'Nov 27', training: 'Welding Training', note: 'Morning only (09:30–12:00). Afternoon free.' },
     ]},
-    '2026-12-S1': { label: 'December 2026 – Session 1', dates: 'Dec 8–11, 2026', schedule: [
+    '2026-12-S1': { label: 'December 2026 – Session 1', dates: 'Dec 8–10, 2026', schedule: [
       { day: 'Day 1', date: 'Dec 8', training: 'Basic Training' },
       { day: 'Day 2', date: 'Dec 9', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Dec 10', training: 'VX 500 Training + Palletizing Training' },
-      { day: 'Day 4', date: 'Dec 11', training: 'Welding Training' },
     ]},
   }
 
   const key = `${month}-${session}`
   const info = SESSION_INFO[key]
+
   const scheduleRows = info?.schedule.map(s =>
     `<tr>
-      <td style="padding:6px 10px;color:#6b7280;">${s.day}</td>
-      <td style="padding:6px 10px;color:#6b7280;">${s.date}</td>
-      <td style="padding:6px 10px;font-weight:500;">${s.training}</td>
+      <td style="padding:6px 10px;color:#6b7280;white-space:nowrap;">${s.day}</td>
+      <td style="padding:6px 10px;color:#6b7280;white-space:nowrap;">${s.date}</td>
+      <td style="padding:6px 10px;font-weight:500;">${s.training}${s.note ? `<br/><span style="font-weight:normal;color:#f59e0b;font-size:12px;">⚠️ ${s.note}</span>` : ''}</td>
     </tr>`
   ).join('') ?? ''
+
+  const dailySchedule = isS2
+    ? `<table style="width:100%;border-collapse:collapse;">
+        <tr><td style="padding:6px 0;color:#6b7280;width:200px;">Day 1–3 Morning</td><td>09:30 – 12:00</td></tr>
+        <tr><td style="padding:6px 0;color:#6b7280;">Day 1–3 Lunch Break</td><td>12:00 – 13:00</td></tr>
+        <tr><td style="padding:6px 0;color:#6b7280;">Day 1–3 Afternoon</td><td>13:00 – 17:00</td></tr>
+        <tr><td style="padding:6px 0;color:#6b7280;">Day 4 Morning</td><td>09:30 – 12:00 (Welding Training)</td></tr>
+        <tr><td style="padding:6px 0;color:#6b7280;">Day 4 Afternoon</td><td>Free</td></tr>
+      </table>`
+    : `<table style="width:100%;border-collapse:collapse;">
+        <tr><td style="padding:6px 0;color:#6b7280;width:200px;">Morning</td><td>09:30 – 12:00</td></tr>
+        <tr><td style="padding:6px 0;color:#6b7280;">Lunch Break</td><td>12:00 – 13:00</td></tr>
+        <tr><td style="padding:6px 0;color:#6b7280;">Afternoon</td><td>13:00 – 17:00</td></tr>
+      </table>`
 
   await sendEmail(
     email,
@@ -206,6 +215,7 @@ export async function POST(req: Request) {
       <p>Dear <strong>${name}</strong>,</p>
       <p>Thank you for registering! Your registration has been confirmed. Below are your details and training information.</p>
       <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;"/>
+
       <h3 style="color:#1d4ed8;">📋 Your Registration Details</h3>
       <table style="width:100%;border-collapse:collapse;">
         <tr><td style="padding:6px 0;color:#6b7280;width:160px;">Company</td><td><strong>${companyName}</strong></td></tr>
@@ -216,10 +226,12 @@ export async function POST(req: Request) {
         <tr><td style="padding:6px 0;color:#6b7280;">Dates</td><td><strong>${info?.dates ?? ''}</strong></td></tr>
         <tr><td style="padding:6px 0;color:#6b7280;">Telephone</td><td><strong>${telephone}</strong></td></tr>
       </table>
+
       <h3 style="color:#1d4ed8;margin-top:24px;">✅ Registered Training Sessions</h3>
       <ul style="padding-left:20px;">
         ${trainingSessions.map((s: string) => `<li style="margin-bottom:4px;">${s}</li>`).join('')}
       </ul>
+
       <h3 style="color:#1d4ed8;margin-top:24px;">📅 Training Schedule</h3>
       <table style="width:100%;border-collapse:collapse;border:1px solid #e5e7eb;">
         <thead>
@@ -231,21 +243,22 @@ export async function POST(req: Request) {
         </thead>
         <tbody>${scheduleRows}</tbody>
       </table>
+
       <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;"/>
+
       <h3 style="color:#1d4ed8;">🕘 Daily Training Schedule</h3>
-      <table style="width:100%;border-collapse:collapse;">
-        <tr><td style="padding:6px 0;color:#6b7280;width:160px;">Morning</td><td>09:30 – 12:00</td></tr>
-        <tr><td style="padding:6px 0;color:#6b7280;">Lunch Break</td><td>12:00 – 13:00</td></tr>
-        <tr><td style="padding:6px 0;color:#6b7280;">Afternoon</td><td>13:00 – 17:00</td></tr>
-      </table>
+      ${dailySchedule}
+
       <h3 style="color:#1d4ed8;margin-top:24px;">📍 Training Address</h3>
       <p style="margin:0;">Dobot Europe GmbH<br/>Werner-Heisenberg-Str. 2A<br/>63263, Neu-Isenburg, Germany</p>
+
       <h3 style="color:#1d4ed8;margin-top:24px;">📌 Additional Notes</h3>
       <ul style="padding-left:20px;line-height:1.8;">
         <li><strong>Travel and accommodation:</strong> To be arranged by the customer.</li>
         <li><strong>Provided by Dobot during training:</strong> Complimentary soft drinks, snacks, and a simple lunch.</li>
         <li><strong>Laptop:</strong> Please bring your own PC, as we will not provide computers for the training.</li>
       </ul>
+
       <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;"/>
       <p style="color:#6b7280;font-size:13px;">⚠️ Please also check your <strong>spam / junk folder</strong> if you do not see this email in your inbox.</p>
       <p style="color:#6b7280;font-size:13px;">If you have any questions, please contact <a href="mailto:hanyu.li@dobot-global.com">hanyu.li@dobot-global.com</a></p>
@@ -266,6 +279,7 @@ export async function POST(req: Request) {
       telephone,
       trainingSessions,
       schedule: info?.schedule ?? [],
+      isS2,
     }
   })
 }
