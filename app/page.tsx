@@ -246,7 +246,7 @@ export default function Home() {
             <p className="text-gray-500 text-sm text-center">Select a session to register for your training</p>
           </div>
           <div className="flex justify-center mb-8">
-            <a href="https://dobotrobots999-my.sharepoint.com/personal/alexander_hou_dobot-global_com/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Falexander%5Fhou%5Fdobot%2Dglobal%5Fcom%2FDocuments%2FTeam%20Share%2F3%2E%20Training%2F3%2E0%20Training%20Session%20Materials&viewid=b1792058%2Dcd53%2D42fc%2D93be%2D4d8d2779e188"
+            <a href="https://dobotrobots999-my.sharepoint.com/:f:/g/personal/alexander_hou_dobot-global_com/IgDpZYhZJqWhS4Vf0yO6OHEWAdIOnSGpGXYqNDS1jOyDoMc?e=9VDAUi"
               target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-6 py-3 rounded-xl shadow-md transition">
               📥 Download Training Materials
