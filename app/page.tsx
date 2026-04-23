@@ -145,6 +145,9 @@ export default function Home() {
   const [certFiles, setCertFiles] = useState<CertFile[]>([])
   const [certLoading, setCertLoading] = useState(false)
   const [certUnlocked, setCertUnlocked] = useState(false)
+  const [listUnlocked, setListUnlocked] = useState(false)
+  const [listPassword, setListPassword] = useState('')
+  const [listError, setListError] = useState('')
 
   useEffect(() => {
     fetch('/api/signup')
@@ -159,6 +162,9 @@ export default function Home() {
     setCertUnlocked(false)
     setCertFiles([])
     setCertPassword('')
+    setListUnlocked(false)
+    setListPassword('')
+    setListError('')
     fetch(`/api/signup?month=${s.month}&session=${s.session}`)
       .then(res => res.json())
       .then(data => { setSessionCount(data.count); setRegistrations(data.registrations ?? []) })
@@ -213,6 +219,11 @@ export default function Home() {
     else { setCertError('Wrong password, please try again.') }
   }
 
+  const handleListUnlock = () => {
+    if (listPassword === 'EMEA') { setListUnlocked(true); setListError('') }
+    else { setListError('Wrong password') }
+  }
+
   const inputClass = "w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 bg-white"
   const labelClass = "block text-sm font-medium text-gray-700 mb-1"
   const sel = SESSIONS.find(s => s.key === selectedKey)
@@ -235,7 +246,7 @@ export default function Home() {
             <p className="text-gray-500 text-sm text-center">Select a session to register for your training</p>
           </div>
           <div className="flex justify-center mb-8">
-            <a href="https://dobotrobots999-my.sharepoint.com/:f:/g/personal/alexander_hou_dobot-global_com/IgBd4kVtMsmgRackj8Av8458ASfq_TldoI51Nwd8J_TlAM4?e=eajhQS"
+            <a href="https://dobotrobots999-my.sharepoint.com/personal/alexander_hou_dobot-global_com/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Falexander%5Fhou%5Fdobot%2Dglobal%5Fcom%2FDocuments%2FTeam%20Share%2F3%2E%20Training%2F3%2E0%20Training%20Session%20Materials&viewid=b1792058%2Dcd53%2D42fc%2D93be%2D4d8d2779e188"
               target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-6 py-3 rounded-xl shadow-md transition">
               📥 Download Training Materials
@@ -333,15 +344,12 @@ export default function Home() {
                       <span className="w-14 text-gray-500">{d.date}</span>
                       <span className="text-gray-700">{d.training}</span>
                     </div>
-                    {d.note && <p className="text-amber-500 ml-26 mt-0.5 pl-28">⚠️ {d.note}</p>}
+                    {d.note && <p className="text-amber-500 mt-0.5 pl-28">⚠️ {d.note}</p>}
                   </div>
                 ))}
               </div>
             </div>
-
-
-
-            <div className="border-t pt-3 text-xs text-gray-500 space-y-1">
+            <div className="border-t pt-3 text-xs text-gray-500 space-y-1.5">
               {emailPreview.isS2 ? (
                 <>
                   <p>🕘 Day 1–3: 09:30–12:00 | Lunch: 12:00–13:00 | Afternoon: 13:00–17:00</p>
@@ -354,14 +362,13 @@ export default function Home() {
               <p>💻 Please bring your own laptop</p>
               <p>🍱 Soft drinks, snacks and lunch provided by Dobot</p>
               <p>🚗 Travel & accommodation to be arranged by the customer</p>
-              <p>📥 <strong>Software & Slides:</strong> <a href="https://dobotrobots999-my.sharepoint.com/:f:/g/personal/alexander_hou_dobot-global_com/IgDpZYhZJqWhS4Vf0yO6OHEWAdIOnSGpGXYqNDS1jOyDoMc?e=LecscN" className="text-blue-600 underline" target="_blank">Click here to download</a> (also available via the "Download Materials" button on the website)</p>
+              <p>📥 <strong>Software & Slides:</strong>{' '}
+                <a href="https://dobotrobots999-my.sharepoint.com/:f:/g/personal/alexander_hou_dobot-global_com/IgDpZYhZJqWhS4Vf0yO6OHEWAdIOnSGpGXYqNDS1jOyDoMc?e=LecscN"
+                  className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">Click here to download</a>
+                {' '}(also available via the "Download Materials" button on the website)
+              </p>
               <p>❌ <strong>Cancellation:</strong> Please contact the person who shared your registration link. Cancel at least one week in advance if possible.</p>
             </div>
-
-
-
-
-
           </div>
           <button onClick={() => { setEmailPreview(null); setSelectedKey(null) }}
             className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition">
@@ -408,24 +415,52 @@ export default function Home() {
           {sessionCount >= max && <p className="text-red-500 mt-1 text-sm">Registration is full</p>}
         </div>
 
+        {/* 已注册公司 - 密码保护 */}
         {registrations.length > 0 && (
           <div className="mb-6 border border-gray-100 rounded-xl overflow-hidden">
-            <div className="bg-gray-50 px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide">Registered Companies</div>
-            <div className="divide-y divide-gray-100">
-              {registrations.map((r, i) => (
-                <div key={i} className="px-4 py-2.5">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-700">{r.company_name}</span>
-                    <span className="text-xs text-gray-400">{r.country_region}</span>
-                  </div>
-                  <div className="flex flex-wrap gap-1 mt-1">
-                    {r.training_sessions.map((t, j) => (
-                      <span key={j} className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">{t}</span>
-                    ))}
-                  </div>
-                </div>
-              ))}
+            <div className="bg-gray-50 px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide flex items-center justify-between">
+              <span>Registered Companies ({registrations.length})</span>
+              {listUnlocked && (
+                <button onClick={() => { setListUnlocked(false); setListPassword('') }}
+                  className="text-gray-400 hover:text-gray-600 text-xs">🔒 Lock</button>
+              )}
             </div>
+            {!listUnlocked ? (
+              <div className="px-4 py-3">
+                <p className="text-xs text-gray-500 mb-2">🔒 Enter password to view registered companies</p>
+                <div className="flex gap-2">
+                  <input
+                    type="password"
+                    value={listPassword}
+                    onChange={e => { setListPassword(e.target.value); setListError('') }}
+                    onKeyDown={e => e.key === 'Enter' && handleListUnlock()}
+                    placeholder="Enter password"
+                    className="flex-1 border border-gray-300 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <button onClick={handleListUnlock}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition">
+                    View
+                  </button>
+                </div>
+                {listError && <p className="text-red-500 text-xs mt-1">{listError}</p>}
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-100">
+                {registrations.map((r, i) => (
+                  <div key={i} className="px-4 py-2.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-gray-700">{r.company_name}</span>
+                      <span className="text-xs text-gray-400">{r.country_region}</span>
+                    </div>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {r.training_sessions.map((t, j) => (
+                        <span key={j} className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">{t}</span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
