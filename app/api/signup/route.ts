@@ -263,7 +263,7 @@ export async function POST(req: Request) {
         <li><strong>Provided by Dobot during training:</strong> Complimentary soft drinks, snacks, and a simple lunch.</li>
         <li><strong>Laptop:</strong> Please bring your own PC, as we will not provide computers for the training.</li>
         <li><strong>Software Package and Training Slides:</strong> Download the required software package and training slides (PDF) here:<br/>
-          <a href="https://dobotrobots999-my.sharepoint.com/:f:/g/personal/alexander_hou_dobot-global_com/IgDpZYhZJqWhS4Vf0yO6OHEWAdIOnSGpGXYqNDS1jOyDoMc?e=LecscN" style="color:#1d4ed8;">Click here to download</a><br/>
+          <a href="https://dobotrobots999-my.sharepoint.com/:f:/g/personal/alexander_hou_dobot-global_com/IgCNjGsOIDkUQ4AewwR2yDk5ASpZ9R-YtEu3P900KQBhmMY?e=aBHbMV" style="color:#1d4ed8;">Click here to download</a><br/>
           <span style="color:#6b7280;font-size:13px;">You can also access these materials anytime from our registration website via the "Download Materials" button.</span>
         </li>
         <li><strong>Cancellation:</strong> If you need to cancel, please contact the person who shared your registration link. To help us manage capacity, please cancel at least one week in advance whenever possible.</li>
