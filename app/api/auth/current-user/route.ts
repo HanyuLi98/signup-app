@@ -4,7 +4,8 @@ import { NextResponse } from "next/server"
 /**
  * 浏览器只访问本站；拉用户信息时服务端转发：GET + Authorization Bearer。
  */
-const UPSTREAM_URL = "http://43.136.21.87:8888/admin/current/user"
+const UPSTREAM_URL = "http://api.dobot.cn/admin/current/user"
+// const UPSTREAM_URL = "http://43.136.21.87:8888/admin/current/user"
 const BROWSER_COOKIE = "token"
 
 const OK_CODE = new Set(["0", "200"])

@@ -3,8 +3,8 @@
 import { useEffect, useState, type ReactNode } from "react";
 
 /** 生产门户；本地联调改成 http://localhost:5173/login */
-// const PORTAL_LOGIN = "https://portal.dobot-robots.com/login"
-const PORTAL_LOGIN = "http://localhost:5173/login";
+const PORTAL_LOGIN = "https://portal.dobot-robots.com/login"
+// const PORTAL_LOGIN = "http://localhost:5173/login";
 
 function readTokenFromSearch(params: URLSearchParams): string | null {
   const keys = ["token", "access_token", "accessToken"];
