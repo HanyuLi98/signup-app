@@ -263,9 +263,9 @@ export default function Home() {
                       const count = counts[s.key] ?? 0
                       const full = count >= max
                       return (
-                        <button key={s.key} onClick={() => !full && handleSelect(s)} disabled={full}
+                        <button key={s.key} onClick={() => handleSelect(s)}
                           className={`rounded-2xl p-5 text-left shadow transition-all border-2 ${full
-                            ? 'bg-gray-100 border-gray-200 cursor-not-allowed opacity-60'
+                            ? 'bg-gray-50 border-red-200 hover:border-red-400 hover:shadow-lg'
                             : 'bg-white border-transparent hover:border-blue-500 hover:shadow-lg'}`}>
                           <div className="flex items-center justify-between mb-2">
                             <span className="font-semibold text-gray-800">{s.sublabel}</span>
