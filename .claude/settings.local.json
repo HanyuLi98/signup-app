@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C \"c:\\\\Users\\\\Administrator\\\\Desktop\\\\RegisterWeb\\\\signup-app\" status)",
+      "Bash(git -C \"c:\\\\Users\\\\Administrator\\\\Desktop\\\\RegisterWeb\\\\signup-app\" diff app/page.tsx)",
+      "Bash(git -C \"c:\\\\Users\\\\Administrator\\\\Desktop\\\\RegisterWeb\\\\signup-app\" add app/page.tsx)",
+      "Bash(git -C 'c:\\\\Users\\\\Administrator\\\\Desktop\\\\RegisterWeb\\\\signup-app' commit -m ' *)",
+      "Bash(git -C \"c:\\\\Users\\\\Administrator\\\\Desktop\\\\RegisterWeb\\\\signup-app\" push)"
+    ]
+  }
+}
