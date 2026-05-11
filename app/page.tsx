@@ -231,7 +231,7 @@ export default function Home() {
 
   const watermark = (
     <div className="fixed bottom-4 right-5 text-gray-600 text-base font-medium drop-shadow z-10">
-      @ikun · Questions? <a href="mailto:hanyu.li@dobot-global.com" className="underline text-blue-700">hanyu.li@dobot-global.com</a>
+      Questions? <a href="mailto:hanyu.li@dobot-global.com" className="underline text-blue-700">hanyu.li@dobot-global.com</a>
     </div>
   )
 
