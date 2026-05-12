@@ -7,6 +7,22 @@ const PORTAL_LOGIN = "https://portal.dobot-robots.com/login";
 // const PORTAL_LOGIN = "http://localhost:5173/login";
 const MAX_AUTO_REDIRECT_ATTEMPTS = 2;
 const REDIRECT_FAIL_KEY = "auth_redirect_failures";
+/** Token 存浏览器（可脚本清除）；不再用 httpOnly Cookie */
+const AUTH_TOKEN_STORAGE_KEY = "signup-app-portal-token";
+
+function getStoredToken(): string | null {
+  if (typeof window === "undefined") return null;
+  const t = window.localStorage.getItem(AUTH_TOKEN_STORAGE_KEY)?.trim();
+  return t || null;
+}
+
+function setStoredToken(token: string) {
+  window.localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, token);
+}
+
+function clearStoredToken() {
+  window.localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY);
+}
 
 function readTokenFromSearch(params: URLSearchParams): string | null {
   const keys = ["token", "access_token", "accessToken"];
@@ -43,7 +59,7 @@ function clearFailCount() {
   window.sessionStorage.removeItem(REDIRECT_FAIL_KEY);
 }
 
-function handleAuthFailure(
+async function handleAuthFailure(
   setLoading: (v: boolean) => void,
   setShowRedirectMask: (v: boolean) => void,
 ) {
@@ -51,6 +67,9 @@ function handleAuthFailure(
   setFailCount(next);
 
   if (next >= MAX_AUTO_REDIRECT_ATTEMPTS) {
+    const hrefUrl = new URL(window.location.href);
+    window.history.replaceState({}, "", stripAuthParams(hrefUrl));
+    clearStoredToken();
     setShowRedirectMask(true);
     setLoading(false);
     return;
@@ -78,28 +97,37 @@ async function runAuthFlow(
           "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
         },
         body: form.toString(),
-        credentials: "include",
       });
     } catch {
-      handleAuthFailure(setLoading, setShowRedirectMask);
+      await handleAuthFailure(setLoading, setShowRedirectMask);
       return;
     }
 
     if (res.ok) {
       clearFailCount();
+      setStoredToken(urlToken);
       window.history.replaceState({}, "", stripAuthParams(hrefUrl));
       setLoading(false);
       return;
     }
-    handleAuthFailure(setLoading, setShowRedirectMask);
+    clearStoredToken();
+    await handleAuthFailure(setLoading, setShowRedirectMask);
+    return;
+  }
+
+  const stored = getStoredToken();
+  if (!stored) {
+    await handleAuthFailure(setLoading, setShowRedirectMask);
     return;
   }
 
   let res: Response;
   try {
-    res = await fetch("/api/auth/current-user", { credentials: "include" });
+    res = await fetch("/api/auth/current-user", {
+      headers: { Authorization: `Bearer ${stored}` },
+    });
   } catch {
-    handleAuthFailure(setLoading, setShowRedirectMask);
+    await handleAuthFailure(setLoading, setShowRedirectMask);
     return;
   }
 
@@ -109,7 +137,8 @@ async function runAuthFlow(
     return;
   }
 
-  handleAuthFailure(setLoading, setShowRedirectMask);
+  clearStoredToken();
+  await handleAuthFailure(setLoading, setShowRedirectMask);
 }
 
 export function AuthGate({ children }: { children: ReactNode }) {

@@ -53,8 +53,8 @@ function err(msg: string, status = 401) {
   return NextResponse.json({ error: msg }, { status })
 }
 
-export async function GET() {
-  const token = (await cookies()).get(BROWSER_COOKIE)?.value
+export async function GET(req: Request) {
+  const token = tokenFromBearer(req)
   if (!token) return err("Unauthorized")
 
   const r = await proxyUser(token)
@@ -86,12 +86,7 @@ export async function POST(req: Request) {
   const r = await proxyUser(token)
   if ("error" in r) return err(r.error)
 
-  ;(await cookies()).set(BROWSER_COOKIE, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    path: "/",
-    secure: false,
-    maxAge: 60 * 60 * 24 * 7,
-  })
+  // 旧版曾写入 httpOnly Cookie；若仍存在则删掉，避免与纯前端存储混用
+  ;(await cookies()).delete({ name: BROWSER_COOKIE, path: "/" })
   return NextResponse.json(r.data)
 }
