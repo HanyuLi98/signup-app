@@ -213,7 +213,7 @@ export async function POST(req: Request) {
         <tr><td style="padding:6px 0;color:#6b7280;width:200px;">Morning</td><td>09:30 – 12:00</td></tr>
         <tr><td style="padding:6px 0;color:#6b7280;">Lunch Break</td><td>12:00 – 13:00</td></tr>
         <tr><td style="padding:6px 0;color:#6b7280;">Afternoon</td><td>13:00 – 17:00</td></tr>
-        <tr><td style="padding:6px 0;color:#6b7280;">Day 4 (Optional)</td><td>Cobots available for extra practice</td></tr>
+        <tr><td style="padding:6px 0;color:#6b7280;">Day 4 (Optional)</td><td>Optional cobot practice for customers who would like extra hands-on time</td></tr>
       </table>`
 
   await sendEmail(

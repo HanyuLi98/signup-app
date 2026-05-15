@@ -440,6 +440,9 @@ export default function Home() {
           {sel?.session === 'S2' && (
             <p className="text-xs text-amber-600 mt-2">⚠️ Day 4: Welding Training in the morning only (09:30–12:00). Afternoon free.</p>
           )}
+          {sel?.session === 'S1' && (
+            <p className="text-xs text-amber-600 mt-2">⚠️ Day 4: Optional cobot practice for who would like extra hands-on time.</p>
+          )}
         </div>
 
         <div className="text-center mb-4">
