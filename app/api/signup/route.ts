@@ -207,13 +207,13 @@ export async function POST(req: Request) {
         <tr><td style="padding:6px 0;color:#6b7280;">Day 1–3 Lunch Break</td><td>12:00 – 13:00</td></tr>
         <tr><td style="padding:6px 0;color:#6b7280;">Day 1–3 Afternoon</td><td>13:00 – 17:00</td></tr>
         <tr><td style="padding:6px 0;color:#6b7280;">Day 4 Morning</td><td>09:30 – 12:00 (Welding Training)</td></tr>
-        <tr><td style="padding:6px 0;color:#6b7280;">Day 4 Afternoon</td><td>Free</td></tr>
+        <tr><td style="padding:6px 0;color:#6b7280;">Day 4 Afternoon</td><td>Optional cobot practice for who would like extra hands-on time</td></tr>
       </table>`
     : `<table style="width:100%;border-collapse:collapse;">
         <tr><td style="padding:6px 0;color:#6b7280;width:200px;">Morning</td><td>09:30 – 12:00</td></tr>
         <tr><td style="padding:6px 0;color:#6b7280;">Lunch Break</td><td>12:00 – 13:00</td></tr>
         <tr><td style="padding:6px 0;color:#6b7280;">Afternoon</td><td>13:00 – 17:00</td></tr>
-        <tr><td style="padding:6px 0;color:#6b7280;">Day 4 (Optional)</td><td>Optional cobot practice for customers who would like extra hands-on time</td></tr>
+        <tr><td style="padding:6px 0;color:#6b7280;">Day 4 (Optional)</td><td>Optional cobot practice for who would like extra hands-on time</td></tr>
       </table>`
 
   await sendEmail(

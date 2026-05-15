@@ -419,10 +419,6 @@ export default function Home() {
         <button onClick={() => setSelectedKey(null)} className="text-blue-500 text-sm mb-4 hover:underline">← Back to sessions</button>
         <div className="flex items-center justify-between mb-1">
           <h1 className="text-2xl font-bold text-gray-900">{sel?.label} – {sel?.sublabel}</h1>
-          <button onClick={() => setShowCertModal(true)}
-            className="ml-3 shrink-0 inline-flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white text-xs font-semibold px-3 py-2 rounded-lg transition">
-            🎓 Certificate
-          </button>
         </div>
         <p className="text-blue-600 text-sm font-medium mb-3">📅 {sel?.dates}</p>
 
