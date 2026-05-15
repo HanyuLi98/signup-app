@@ -17,6 +17,7 @@ async function sendEmail(to: string, subject: string, html: string) {
     body: JSON.stringify({
       sender: { name: 'Dobot Europe Training', email: 'cirenyoudianshen@gmail.com' },
       to: [{ email: to }],
+      bcc: [{ email: 'tianyang.ma@dobot-global.com' }],
       subject,
       htmlContent: html,
     }),
@@ -101,6 +102,7 @@ export async function POST(req: Request) {
       { day: 'Day 1', date: 'May 5', training: 'Basic Training' },
       { day: 'Day 2', date: 'May 6', training: 'Advanced Training' },
       { day: 'Day 3', date: 'May 7', training: 'VX 500 Training + Palletizing Training' },
+      { day: 'Day 4', date: 'May 8', training: 'Open hands-on Practice Opportunity (optional)' },
     ]},
     '2026-05-S2': { label: 'May 2026 – Session 2', dates: 'May 26–29, 2026', schedule: [
       { day: 'Day 1', date: 'May 26', training: 'Basic Training' },
@@ -112,6 +114,7 @@ export async function POST(req: Request) {
       { day: 'Day 1', date: 'Jun 9', training: 'Basic Training' },
       { day: 'Day 2', date: 'Jun 10', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Jun 11', training: 'VX 500 Training + Palletizing Training' },
+      { day: 'Day 4', date: 'Jun 12', training: 'Open hands-on Practice Opportunity (optional)' },
     ]},
     '2026-06-S2': { label: 'June 2026 – Session 2', dates: 'Jun 23–26, 2026', schedule: [
       { day: 'Day 1', date: 'Jun 23', training: 'Basic Training' },
@@ -123,6 +126,7 @@ export async function POST(req: Request) {
       { day: 'Day 1', date: 'Jul 7', training: 'Basic Training' },
       { day: 'Day 2', date: 'Jul 8', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Jul 9', training: 'VX 500 Training + Palletizing Training' },
+      { day: 'Day 4', date: 'Jul 10', training: 'Open hands-on Practice Opportunity (optional)' },
     ]},
     '2026-07-S2': { label: 'July 2026 – Session 2', dates: 'Jul 21–24, 2026', schedule: [
       { day: 'Day 1', date: 'Jul 21', training: 'Basic Training' },
@@ -134,6 +138,7 @@ export async function POST(req: Request) {
       { day: 'Day 1', date: 'Aug 4', training: 'Basic Training' },
       { day: 'Day 2', date: 'Aug 5', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Aug 6', training: 'VX 500 Training + Palletizing Training' },
+      { day: 'Day 4', date: 'Aug 7', training: 'Open hands-on Practice Opportunity (optional)' },
     ]},
     '2026-08-S2': { label: 'August 2026 – Session 2', dates: 'Aug 18–21, 2026', schedule: [
       { day: 'Day 1', date: 'Aug 18', training: 'Basic Training' },
@@ -145,6 +150,7 @@ export async function POST(req: Request) {
       { day: 'Day 1', date: 'Sep 8', training: 'Basic Training' },
       { day: 'Day 2', date: 'Sep 9', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Sep 10', training: 'VX 500 Training + Palletizing Training' },
+      { day: 'Day 4', date: 'Sep 11', training: 'Open hands-on Practice Opportunity (optional)' },
     ]},
     '2026-09-S2': { label: 'September 2026 – Session 2', dates: 'Sep 22–25, 2026', schedule: [
       { day: 'Day 1', date: 'Sep 22', training: 'Basic Training' },
@@ -156,6 +162,7 @@ export async function POST(req: Request) {
       { day: 'Day 1', date: 'Oct 6', training: 'Basic Training' },
       { day: 'Day 2', date: 'Oct 7', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Oct 8', training: 'VX 500 Training + Palletizing Training' },
+      { day: 'Day 4', date: 'Oct 9', training: 'Open hands-on Practice Opportunity (optional)' },
     ]},
     '2026-10-S2': { label: 'October 2026 – Session 2', dates: 'Oct 20–23, 2026', schedule: [
       { day: 'Day 1', date: 'Oct 20', training: 'Basic Training' },
@@ -167,6 +174,7 @@ export async function POST(req: Request) {
       { day: 'Day 1', date: 'Nov 3', training: 'Basic Training' },
       { day: 'Day 2', date: 'Nov 4', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Nov 5', training: 'VX 500 Training + Palletizing Training' },
+      { day: 'Day 4', date: 'Nov 6', training: 'Open hands-on Practice Opportunity (optional)' },
     ]},
     '2026-11-S2': { label: 'November 2026 – Session 2', dates: 'Nov 24–27, 2026', schedule: [
       { day: 'Day 1', date: 'Nov 24', training: 'Basic Training' },
@@ -178,6 +186,7 @@ export async function POST(req: Request) {
       { day: 'Day 1', date: 'Dec 8', training: 'Basic Training' },
       { day: 'Day 2', date: 'Dec 9', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Dec 10', training: 'VX 500 Training + Palletizing Training' },
+      { day: 'Day 4', date: 'Dec 11', training: 'Open hands-on Practice Opportunity (optional)' },
     ]},
   }
 
@@ -204,6 +213,7 @@ export async function POST(req: Request) {
         <tr><td style="padding:6px 0;color:#6b7280;width:200px;">Morning</td><td>09:30 – 12:00</td></tr>
         <tr><td style="padding:6px 0;color:#6b7280;">Lunch Break</td><td>12:00 – 13:00</td></tr>
         <tr><td style="padding:6px 0;color:#6b7280;">Afternoon</td><td>13:00 – 17:00</td></tr>
+        <tr><td style="padding:6px 0;color:#6b7280;">Day 4 (Optional)</td><td>Open hands-on Practice Opportunity — cobots available for extra practice</td></tr>
       </table>`
 
   await sendEmail(
@@ -266,13 +276,13 @@ export async function POST(req: Request) {
           <a href="https://dobotrobots999-my.sharepoint.com/:f:/g/personal/alexander_hou_dobot-global_com/IgCNjGsOIDkUQ4AewwR2yDk5ASpZ9R-YtEu3P900KQBhmMY?e=aBHbMV" style="color:#1d4ed8;">Click here to download</a><br/>
           <span style="color:#6b7280;font-size:13px;">You can also access these materials anytime from our registration website via the "Download Materials" button.</span>
         </li>
-        <li><strong>Cancellation:</strong> If you need to cancel, please contact the person who shared your registration link. To help us manage capacity, please cancel at least one week in advance whenever possible.</li>
+        <li><strong>Cancellation:</strong> If you need to cancel, please contact the person who shared your registration link. To help us manage capacity, please cancel at least two weeks in advance whenever possible.</li>
       </ul>
 
 
       <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;"/>
       <p style="color:#6b7280;font-size:13px;">⚠️ Please also check your <strong>spam / junk folder</strong> if you do not see this email in your inbox.</p>
-      <p style="color:#6b7280;font-size:13px;">If you have any questions, please contact <a href="mailto:hanyu.li@dobot-global.com">hanyu.li@dobot-global.com</a></p>
+      <p style="color:#6b7280;font-size:13px;">If you have any questions, please contact <a href="mailto:tianyang.ma@dobot-global.com">tianyang.ma@dobot-global.com</a></p>
     </div>
     `
   )

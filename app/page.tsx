@@ -7,6 +7,7 @@ const SESSIONS = [
       { day: 'Day 1', date: 'May 5', training: 'Basic Training' },
       { day: 'Day 2', date: 'May 6', training: 'Advanced Training' },
       { day: 'Day 3', date: 'May 7', training: 'VX 500 + Palletizing' },
+      { day: 'Day 4', date: 'May 8', training: 'Open hands-on Practice Opportunity (optional)' },
     ]},
   { key: '2026-05-S2', month: '2026-05', session: 'S2', label: 'May 2026', sublabel: 'Session 2', dates: 'May 26–29, 2026',
     schedule: [
@@ -20,6 +21,7 @@ const SESSIONS = [
       { day: 'Day 1', date: 'Jun 9', training: 'Basic Training' },
       { day: 'Day 2', date: 'Jun 10', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Jun 11', training: 'VX 500 + Palletizing' },
+      { day: 'Day 4', date: 'Jun 12', training: 'Open hands-on Practice Opportunity (optional)' },
     ]},
   { key: '2026-06-S2', month: '2026-06', session: 'S2', label: 'June 2026', sublabel: 'Session 2', dates: 'Jun 23–26, 2026',
     schedule: [
@@ -33,6 +35,7 @@ const SESSIONS = [
       { day: 'Day 1', date: 'Jul 7', training: 'Basic Training' },
       { day: 'Day 2', date: 'Jul 8', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Jul 9', training: 'VX 500 + Palletizing' },
+      { day: 'Day 4', date: 'Jul 10', training: 'Open hands-on Practice Opportunity (optional)' },
     ]},
   { key: '2026-07-S2', month: '2026-07', session: 'S2', label: 'July 2026', sublabel: 'Session 2', dates: 'Jul 21–24, 2026',
     schedule: [
@@ -46,6 +49,7 @@ const SESSIONS = [
       { day: 'Day 1', date: 'Aug 4', training: 'Basic Training' },
       { day: 'Day 2', date: 'Aug 5', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Aug 6', training: 'VX 500 + Palletizing' },
+      { day: 'Day 4', date: 'Aug 7', training: 'Open hands-on Practice Opportunity (optional)' },
     ]},
   { key: '2026-08-S2', month: '2026-08', session: 'S2', label: 'August 2026', sublabel: 'Session 2', dates: 'Aug 18–21, 2026',
     schedule: [
@@ -59,6 +63,7 @@ const SESSIONS = [
       { day: 'Day 1', date: 'Sep 8', training: 'Basic Training' },
       { day: 'Day 2', date: 'Sep 9', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Sep 10', training: 'VX 500 + Palletizing' },
+      { day: 'Day 4', date: 'Sep 11', training: 'Open hands-on Practice Opportunity (optional)' },
     ]},
   { key: '2026-09-S2', month: '2026-09', session: 'S2', label: 'September 2026', sublabel: 'Session 2', dates: 'Sep 22–25, 2026',
     schedule: [
@@ -72,6 +77,7 @@ const SESSIONS = [
       { day: 'Day 1', date: 'Oct 6', training: 'Basic Training' },
       { day: 'Day 2', date: 'Oct 7', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Oct 8', training: 'VX 500 + Palletizing' },
+      { day: 'Day 4', date: 'Oct 9', training: 'Open hands-on Practice Opportunity (optional)' },
     ]},
   { key: '2026-10-S2', month: '2026-10', session: 'S2', label: 'October 2026', sublabel: 'Session 2', dates: 'Oct 20–23, 2026',
     schedule: [
@@ -85,6 +91,7 @@ const SESSIONS = [
       { day: 'Day 1', date: 'Nov 3', training: 'Basic Training' },
       { day: 'Day 2', date: 'Nov 4', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Nov 5', training: 'VX 500 + Palletizing' },
+      { day: 'Day 4', date: 'Nov 6', training: 'Open hands-on Practice Opportunity (optional)' },
     ]},
   { key: '2026-11-S2', month: '2026-11', session: 'S2', label: 'November 2026', sublabel: 'Session 2', dates: 'Nov 24–27, 2026',
     schedule: [
@@ -98,6 +105,7 @@ const SESSIONS = [
       { day: 'Day 1', date: 'Dec 8', training: 'Basic Training' },
       { day: 'Day 2', date: 'Dec 9', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Dec 10', training: 'VX 500 + Palletizing' },
+      { day: 'Day 4', date: 'Dec 11', training: 'Open hands-on Practice Opportunity (optional)' },
     ]},
 ]
 
@@ -124,6 +132,19 @@ type EmailPreview = {
   trainingSessions: string[]
   schedule: { day: string; date: string; training: string; note?: string }[]
   isS2: boolean
+}
+
+function getSessionEndDate(session: typeof SESSIONS[number]) {
+  const lastDay = session.schedule[session.schedule.length - 1]
+  const day = Number.parseInt(lastDay?.date.replace(/\D/g, '') ?? '', 10)
+  const year = Number.parseInt(session.month.slice(0, 4), 10)
+  const monthIndex = Number.parseInt(session.month.slice(5, 7), 10) - 1
+
+  if (Number.isNaN(day) || Number.isNaN(year) || Number.isNaN(monthIndex)) {
+    return null
+  }
+
+  return new Date(year, monthIndex, day)
 }
 
 export default function Home() {
@@ -228,10 +249,16 @@ export default function Home() {
   const labelClass = "block text-sm font-medium text-gray-700 mb-1"
   const sel = SESSIONS.find(s => s.key === selectedKey)
   const months = ['May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  const upcomingSessions = SESSIONS.filter(s => {
+    const endDate = getSessionEndDate(s)
+    return !endDate || endDate >= today
+  })
 
   const watermark = (
     <div className="fixed bottom-4 right-5 text-gray-600 text-base font-medium drop-shadow z-10">
-      Questions? <a href="mailto:hanyu.li@dobot-global.com" className="underline text-blue-700">hanyu.li@dobot-global.com</a>
+      Questions? <a href="mailto:tianyang.ma@dobot-global.com" className="underline text-blue-700">tianyang.ma@dobot-global.com</a>
     </div>
   )
 
@@ -254,7 +281,8 @@ export default function Home() {
           </div>
           <div className="space-y-6">
             {months.map(month => {
-              const monthSessions = SESSIONS.filter(s => s.label.startsWith(month))
+              const monthSessions = upcomingSessions.filter(s => s.label.startsWith(month))
+              if (monthSessions.length === 0) return null
               return (
                 <div key={month}>
                   <h2 className="text-base font-semibold text-gray-600 mb-3 border-b border-gray-200 pb-1">{month} 2026</h2>
@@ -298,6 +326,11 @@ export default function Home() {
                 </div>
               )
             })}
+            {upcomingSessions.length === 0 && (
+              <div className="text-center text-sm text-gray-500 py-6">
+                No upcoming sessions are available right now.
+              </div>
+            )}
           </div>
         </div>
         {watermark}
@@ -473,14 +506,14 @@ export default function Home() {
             <input type="text" value={form.name} onChange={e => setForm({...form, name: e.target.value})} placeholder="Enter full name" className={inputClass} /></div>
           <div><label className={labelClass}>Job Title <span className="text-red-500">*</span></label>
             <input type="text" value={form.jobTitle} onChange={e => setForm({...form, jobTitle: e.target.value})} placeholder="e.g. Engineer, Manager" className={inputClass} /></div>
-          <div><label className={labelClass}>Job Responsibilities <span className="text-red-500">*</span></label>
+          <div><label className={labelClass}>Experience with Robots <span className="text-red-500">*</span></label>
             <textarea value={form.jobResponsibilities} onChange={e => setForm({...form, jobResponsibilities: e.target.value})}
-              placeholder="Briefly describe your responsibilities" rows={3}
+              placeholder="Briefly describe your experience with robot use and programming" rows={3}
               className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 resize-none bg-white" /></div>
           <div>
             <label className={labelClass}>Attend Training Session <span className="text-red-500">*</span></label>
             <div className="space-y-2 mt-1">
-              {trainingOptions.map(option => (
+              {trainingOptions.filter(option => sel?.session === 'S2' || option !== 'Welding Training').map(option => (
                 <label key={option} className="flex items-center gap-3 cursor-pointer group">
                   <input type="checkbox" checked={form.trainingSessions.includes(option)} onChange={() => handleTraining(option)} className="w-4 h-4 accent-blue-600" />
                   <span className="text-gray-700 text-sm group-hover:text-blue-600 transition">{option}</span>
