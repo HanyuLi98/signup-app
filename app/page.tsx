@@ -400,7 +400,7 @@ export default function Home() {
                   className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">Click here to download</a>
                 {' '}(also available via the "Download Materials" button on the website)
               </p>
-              <p>❌ <strong>Cancellation:</strong> Please contact the person who shared your registration link. If the session cannot be held, we will notify you at least 2 weeks in advance. For special cases, please contact the person who shared your registration link so we can help arrange the next steps.</p>
+              <p>❌ <strong>Cancellation:</strong> Please contact the person who invited you to the session. If the session cannot be held, we will notify you at least 2 weeks in advance. For special cases, please contact the person who invited you to the session so we can help arrange the next steps.</p>
             </div>
           </div>
           <button onClick={() => { setEmailPreview(null); setSelectedKey(null) }}

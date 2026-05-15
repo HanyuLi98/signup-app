@@ -276,7 +276,7 @@ export async function POST(req: Request) {
           <a href="https://dobotrobots999-my.sharepoint.com/:f:/g/personal/alexander_hou_dobot-global_com/IgCNjGsOIDkUQ4AewwR2yDk5ASpZ9R-YtEu3P900KQBhmMY?e=aBHbMV" style="color:#1d4ed8;">Click here to download</a><br/>
           <span style="color:#6b7280;font-size:13px;">You can also access these materials anytime from our registration website via the "Download Materials" button.</span>
         </li>
-        <li><strong>Cancellation:</strong> If you need to cancel, please contact the person who shared your registration link. If the session cannot be held, we will notify you at least 2 weeks in advance. For special cases, please contact the person who shared your registration link so we can help arrange the next steps.</li>
+        <li><strong>Cancellation:</strong> If you need to cancel, please contact the person who invited you to the session. If the session cannot be held, we will notify you at least 2 weeks in advance. For special cases, please contact the person who invited you to the session so we can help arrange the next steps.</li>
       </ul>
 
 
