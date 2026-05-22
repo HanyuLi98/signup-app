@@ -110,12 +110,12 @@ export async function POST(req: Request) {
       { day: 'Day 3', date: 'May 28', training: 'VX 500 Training + Palletizing Training' },
       { day: 'Day 4', date: 'May 29', training: 'Welding Training', note: 'Morning only (09:30–12:00). Afternoon free.' },
     ]},
-    // '2026-06-S1': { label: 'June 2026 – Session 1', dates: 'Jun 9–11, 2026', schedule: [
-    //   { day: 'Day 1', date: 'Jun 9', training: 'Basic Training' },
-    //   { day: 'Day 2', date: 'Jun 10', training: 'Advanced Training' },
-    //   { day: 'Day 3', date: 'Jun 11', training: 'VX 500 Training + Palletizing Training' },
-    //   { day: 'Day 4', date: 'Jun 12', training: 'Open hands-on Practice Opportunity (optional)' },
-    // ]},
+    '2026-06-S1': { label: 'June 2026 – Session 1', dates: 'Jun 9–11, 2026', schedule: [
+      { day: 'Day 1', date: 'Jun 9', training: 'Basic Training' },
+      { day: 'Day 2', date: 'Jun 10', training: 'Advanced Training' },
+      { day: 'Day 3', date: 'Jun 11', training: 'VX 500 Training + Palletizing Training' },
+      { day: 'Day 4', date: 'Jun 12', training: 'Open hands-on Practice Opportunity (optional)' },
+    ]},
     '2026-06-S2': { label: 'June 2026 – Session 2', dates: 'Jun 23–26, 2026', schedule: [
       { day: 'Day 1', date: 'Jun 23', training: 'Basic Training' },
       { day: 'Day 2', date: 'Jun 24', training: 'Advanced Training' },
