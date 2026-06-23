@@ -111,7 +111,7 @@ const bgStyle = {
   background: 'linear-gradient(135deg, #dbeafe 0%, #ede9fe 50%, #dbeafe 100%)',
 }
 
-type Registration = { company_name: string; country_region: string; training_sessions: string[]; name: string }
+type Registration = { company_name: string; name: string; training_sessions: string[]; }
 type CertFile = { name: string; url: string }
 type EmailPreview = {
   to: string
@@ -212,7 +212,7 @@ export default function Home() {
       setEmailPreview(data.emailPreview)
       setSessionCount(c => c + 1)
       setCounts(prev => ({ ...prev, [selectedKey!]: (prev[selectedKey!] ?? 0) + 1 }))
-      setRegistrations(prev => [...prev, { company_name: form.companyName, country_region: form.countryRegion, training_sessions: form.trainingSessions, name: form.name }])
+      setRegistrations(prev => [...prev, { company_name: form.companyName, name: form.name, training_sessions: form.trainingSessions }])
       setForm({ companyName: '', countryRegion: '', name: '', jobTitle: '', jobResponsibilities: '', trainingSessions: [], email: '', telephone: '' })
     } else {
       setError(data.error || 'Registration failed, please try again.')
