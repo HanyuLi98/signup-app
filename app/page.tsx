@@ -111,7 +111,7 @@ const bgStyle = {
   background: 'linear-gradient(135deg, #dbeafe 0%, #ede9fe 50%, #dbeafe 100%)',
 }
 
-type Registration = { company_name: string; customer_name: string; training_sessions: string[]; }
+type Registration = { company_name: string; country_region?: string; training_sessions: string[]; name?: string }
 type CertFile = { name: string; url: string }
 type EmailPreview = {
   to: string
@@ -212,7 +212,7 @@ export default function Home() {
       setEmailPreview(data.emailPreview)
       setSessionCount(c => c + 1)
       setCounts(prev => ({ ...prev, [selectedKey!]: (prev[selectedKey!] ?? 0) + 1 }))
-      setRegistrations(prev => [...prev, { company_name: form.companyName, customer_name: form.name, training_sessions: form.trainingSessions }])
+  setRegistrations(prev => [...prev, { company_name: form.companyName, country_region: form.countryRegion, training_sessions: form.trainingSessions, name: form.name }])
       setForm({ companyName: '', countryRegion: '', name: '', jobTitle: '', jobResponsibilities: '', trainingSessions: [], email: '', telephone: '' })
     } else {
       setError(data.error || 'Registration failed, please try again.')
@@ -474,8 +474,11 @@ export default function Home() {
                 {registrations.map((r, i) => (
                   <div key={i} className="px-4 py-2.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">{r.company_name}</span>
-                      <span className="text-xs text-gray-400">{r.customer_name}</span>
+                      <div>
+                        <div className="text-sm font-medium text-gray-700">{r.company_name}</div>
+                        {r.name && <div className="text-xs text-gray-500">Participant: {r.name}</div>}
+                      </div>
+                      <span className="text-xs text-gray-400">{r.country_region}</span>
                     </div>
                     <div className="flex flex-wrap gap-1 mt-1">
                       {r.training_sessions.map((t, j) => (

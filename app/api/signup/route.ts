@@ -32,7 +32,7 @@ export async function GET(req: Request) {
   if (month && session) {
     const { count, data } = await supabase
       .from('signups')
-      .select('company_name, country_region, training_sessions', { count: 'exact' })
+      .select('company_name, country_region, training_sessions, name', { count: 'exact' })
       .eq('month', month)
       .eq('session', session)
     return NextResponse.json({ count: count ?? 0, max: MAX_SLOTS, registrations: data ?? [] })
