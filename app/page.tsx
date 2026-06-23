@@ -475,8 +475,8 @@ export default function Home() {
                   <div key={i} className="px-4 py-2.5">
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium text-gray-700">{r.company_name}</span>
-                      <span className="text-sm font-medium text-gray-700">{r.name}</span>
-                      <span className="text-xs text-gray-400">{r.country_region}</span>
+                      {/* <span className="text-sm font-medium text-gray-700">{r.name}</span> */}
+                      <span className="text-xs text-gray-400">{r.name}</span>
                     </div>
                     <div className="flex flex-wrap gap-1 mt-1">
                       {r.training_sessions.map((t, j) => (
