@@ -266,7 +266,7 @@ export default function Home() {
             <p className="text-gray-500 text-sm text-center">Select a session to register for your training</p>
           </div>
           <div className="flex justify-center mb-8">
-            <a href="https://dobotrobots999-my.sharepoint.com/:f:/g/personal/alexander_hou_dobot-global_com/IgDpZYhZJqWhS4Vf0yO6OHEWAdIOnSGpGXYqNDS1jOyDoMc?e=9VDAUi"
+            <a href="https://dobotrobots999-my.sharepoint.com/:f:/g/personal/alexander_hou_dobot-global_com/IgDpZYhZJqWhS4Vf0yO6OHEWAdIOnSGpGXYqNDS1jOyDoMc"
               target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-6 py-3 rounded-xl shadow-md transition">
               📥 Download Training Materials
@@ -389,7 +389,7 @@ export default function Home() {
               <p>🍱 Soft drinks, snacks and lunch provided by Dobot</p>
               <p>🚗 Travel & accommodation to be arranged by the customer</p>
               <p>📥 <strong>Software & Slides:</strong>{' '}
-                <a href="https://dobotrobots999-my.sharepoint.com/:f:/g/personal/alexander_hou_dobot-global_com/IgDpZYhZJqWhS4Vf0yO6OHEWAdIOnSGpGXYqNDS1jOyDoMc?e=LecscN"
+                <a href="https://dobotrobots999-my.sharepoint.com/:f:/g/personal/alexander_hou_dobot-global_com/IgDpZYhZJqWhS4Vf0yO6OHEWAdIOnSGpGXYqNDS1jOyDoMc"
                   className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">Click here to download</a>
                 {' '}(also available via the "Download Materials" button on the website)
               </p>
