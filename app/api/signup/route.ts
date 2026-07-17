@@ -158,17 +158,11 @@ export async function POST(req: Request) {
       { day: 'Day 3', date: 'Sep 24', training: 'VX 500 Training + Palletizing Training' },
       { day: 'Day 4', date: 'Sep 25', training: 'Welding Training', note: 'Morning only (09:30–12:00). Afternoon free.' },
     ]},
-    '2026-10-S1': { label: 'October 2026 – Session 1', dates: 'Oct 6–8, 2026', schedule: [
+    '2026-10-S1': { label: 'October 2026 – Session 1', dates: 'Oct 13–15, 2026', schedule: [
       { day: 'Day 1', date: 'Oct 6', training: 'Basic Training' },
       { day: 'Day 2', date: 'Oct 7', training: 'Advanced Training' },
       { day: 'Day 3', date: 'Oct 8', training: 'VX 500 Training + Palletizing Training' },
       { day: 'Day 4', date: 'Oct 9', training: 'Open hands-on Practice Opportunity (optional)' },
-    ]},
-    '2026-10-S2': { label: 'October 2026 – Session 2', dates: 'Oct 20–23, 2026', schedule: [
-      { day: 'Day 1', date: 'Oct 20', training: 'Basic Training' },
-      { day: 'Day 2', date: 'Oct 21', training: 'Advanced Training' },
-      { day: 'Day 3', date: 'Oct 22', training: 'VX 500 Training + Palletizing Training' },
-      { day: 'Day 4', date: 'Oct 23', training: 'Welding Training', note: 'Morning only (09:30–12:00). Afternoon free.' },
     ]},
     '2026-11-S1': { label: 'November 2026 – Session 1', dates: 'Nov 3–5, 2026', schedule: [
       { day: 'Day 1', date: 'Nov 3', training: 'Basic Training' },
