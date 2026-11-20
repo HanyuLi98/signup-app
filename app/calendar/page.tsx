@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "2027 Training Calendar | Dobot EMEA",
-  description: "Explore the proposed Dobot EMEA 2027 training calendar and quarterly webinars.",
+  description: "Explore the Dobot EMEA 2027 training calendar and quarterly webinars.",
 };
 
 export default function CalendarPage() {
@@ -13,8 +13,8 @@ export default function CalendarPage() {
         <Link href="/" className="font-medium underline underline-offset-4">
           Back to training registration
         </Link>
-        <a href="/training-calendar-2027.html" download="Dobot_EMEA_Training_Calendar_2027_v1.1.html" className="underline underline-offset-4">
-          Download standalone calendar
+        <a href="/2027_Training_Calendar_v1.1.pdf" download className="underline underline-offset-4">
+          Download 2027 calendar PDF
         </a>
       </nav>
       <iframe
