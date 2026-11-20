@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
+import { findSession, isRegistrationOpen, SESSIONS_2027 } from '../../lib/training-sessions'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -30,11 +31,12 @@ export async function GET(req: Request) {
   const session = searchParams.get('session')
 
   if (month && session) {
-    const { count, data } = await supabase
+    const { count, data, error } = await supabase
       .from('signups')
       .select('company_name, country_region, training_sessions, name', { count: 'exact' })
       .eq('month', month)
       .eq('session', session)
+    if (error) return NextResponse.json({ error: 'Unable to load availability.' }, { status: 503 })
     return NextResponse.json({ count: count ?? 0, max: MAX_SLOTS, registrations: data ?? [] })
   }
 
@@ -47,17 +49,16 @@ export async function GET(req: Request) {
     '2026-10-S1',
     '2026-11-S1', '2026-11-S2',
     '2026-12-S1',
+    ...SESSIONS_2027.filter(s => isRegistrationOpen(s)).map(s => s.key),
   ]
   const counts: Record<string, number> = {}
-  for (const s of sessions) {
-    const month = s.slice(0, 7)
-    const session = s.slice(8)
-    const { count } = await supabase
-      .from('signups')
-      .select('*', { count: 'exact', head: true })
-      .eq('month', month)
-      .eq('session', session)
-    counts[s] = count ?? 0
+  sessions.forEach(key => { counts[key] = 0 })
+  const { data, error } = await supabase.from('signups').select('month, session')
+    .in('month', [...new Set(sessions.map(key => key.slice(0,7)))])
+  if (error) return NextResponse.json({ error: 'Unable to load availability.' }, { status: 503 })
+  for (const row of data ?? []) {
+    const key = `${row.month}-${row.session}`
+    if (key in counts) counts[key]++
   }
   return NextResponse.json({ counts, max: MAX_SLOTS })
 }
@@ -69,13 +70,42 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Missing month or session' }, { status: 400 })
   }
 
-  const { count } = await supabase
+  const plannedSession = findSession(month, session)
+  if (String(month).startsWith('2027')) {
+    if (!plannedSession) {
+      return NextResponse.json({ error: 'This training session is not scheduled.' }, { status: 400 })
+    }
+    if (!isRegistrationOpen(plannedSession)) {
+      return NextResponse.json({ error: 'Registration for this session will open closer to the training date.' }, { status: 400 })
+    }
+    if (!companyName || !countryRegion || !name || !jobTitle || !jobResponsibilities || !email || !telephone) {
+      return NextResponse.json({ error: 'Please fill in all required fields.' }, { status: 400 })
+    }
+    if (!Array.isArray(trainingSessions) || trainingSessions.length !== 1 || trainingSessions[0] !== plannedSession.trainingOptions?.[0]) {
+      return NextResponse.json({ error: 'Please select the training offered by this session.' }, { status: 400 })
+    }
+  }
+
+  const { count, error: capacityError } = await supabase
     .from('signups')
     .select('*', { count: 'exact', head: true })
     .eq('month', month)
     .eq('session', session)
+  if (capacityError) {
+    return NextResponse.json({ error: 'Unable to check capacity. Please try again.' }, { status: 503 })
+  }
   if ((count ?? 0) >= MAX_SLOTS) {
     return NextResponse.json({ error: 'Registration is full for this session' }, { status: 400 })
+  }
+
+  if (String(month).startsWith('2027')) {
+    const { data: companies, error } = await supabase.from('signups').select('company_name').eq('month', month).eq('session', session)
+    if (error) return NextResponse.json({ error: 'Unable to check company availability.' }, { status: 503 })
+    const normalize = (value:string) => value.trim().toLocaleLowerCase('en')
+    const existing = new Set((companies ?? []).map(row => normalize(row.company_name)))
+    if (!existing.has(normalize(companyName)) && existing.size >= 5) {
+      return NextResponse.json({ error: 'The five-company limit for this session has been reached.' }, { status: 400 })
+    }
   }
 
   const { error } = await supabase
@@ -95,7 +125,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'This email has already been registered for this session' }, { status: 400 })
   }
 
-  const isS2 = session === 'S2'
+  const isS2 = !String(month).startsWith('2027') && session === 'S2'
 
   const SESSION_INFO: Record<string, { label: string; dates: string; schedule: { day: string; date: string; training: string; note?: string }[] }> = {
     '2026-05-S1': { label: 'May 2026 – Session 1', dates: 'May 5–7, 2026', schedule: [
@@ -185,7 +215,9 @@ export async function POST(req: Request) {
   }
 
   const key = `${month}-${session}`
-  const info = SESSION_INFO[key]
+  const info = String(month).startsWith('2027') && plannedSession
+    ? { label: `${plannedSession.label} – ${plannedSession.sublabel}`, dates: plannedSession.dates, schedule: plannedSession.schedule }
+    : SESSION_INFO[key]
 
   const scheduleRows = info?.schedule.map(s =>
     `<tr>
@@ -195,7 +227,13 @@ export async function POST(req: Request) {
     </tr>`
   ).join('') ?? ''
 
-  const dailySchedule = isS2
+  const dailySchedule = String(month).startsWith('2027')
+    ? `<table style="width:100%;border-collapse:collapse;">
+        <tr><td style="padding:6px 0;color:#6b7280;width:200px;">Morning</td><td>09:30 – 12:00</td></tr>
+        <tr><td style="padding:6px 0;color:#6b7280;">Lunch Break</td><td>12:00 – 13:00</td></tr>
+        <tr><td style="padding:6px 0;color:#6b7280;">Afternoon</td><td>13:00 – 17:00</td></tr>
+      </table>`
+    : isS2
     ? `<table style="width:100%;border-collapse:collapse;">
         <tr><td style="padding:6px 0;color:#6b7280;width:200px;">Day 1–3 Morning</td><td>09:30 – 12:00</td></tr>
         <tr><td style="padding:6px 0;color:#6b7280;">Day 1–3 Lunch Break</td><td>12:00 – 13:00</td></tr>
@@ -265,7 +303,8 @@ export async function POST(req: Request) {
       <ul style="padding-left:20px;line-height:1.8;">
         <li><strong>Travel and accommodation:</strong> To be arranged by the customer.</li>
         <li><strong>Provided by Dobot during training:</strong> Complimentary soft drinks, snacks, and a simple lunch.</li>
-        <li><strong>Laptop:</strong> Please bring your own PC, as we will not provide computers for the training.</li>
+        <li><strong>Participants:</strong> We recommend that each partner company sends two participants per session.</li>
+        <li><strong>Laptop:</strong> Please bring at least one laptop per company. A laptop with local administrator rights is strongly preferred for software setup and testing. We do not provide computers for the training.</li>
         <li><strong>Software Package and Training Slides:</strong> Download the required software package and training slides (PDF) here:<br/>
           <a href="https://dobotrobots999-my.sharepoint.com/:f:/g/personal/alexander_hou_dobot-global_com/IgDpZYhZJqWhS4Vf0yO6OHEWAdIOnSGpGXYqNDS1jOyDoMc" style="color:#1d4ed8;">Click here to download</a><br/>
           <span style="color:#6b7280;font-size:13px;">You can also access these materials anytime from our registration website via the "Download Materials" button.</span>

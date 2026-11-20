@@ -4,9 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/sync-training-calendar.mjs --check && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "calendar:sync": "node scripts/sync-training-calendar.mjs",
+    "calendar:check": "node scripts/sync-training-calendar.mjs --check",
+    "test:training": "node tests/training-registration.cjs"
   },
   "dependencies": {
     "@getbrevo/brevo": "^5.0.4",
