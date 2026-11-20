@@ -206,13 +206,24 @@ export default function TrainingRegistration({ initialSessionKey }: { initialSes
               </select>
             </label>}
           </div>
-          {selectedYear === '2027' && <div className="mb-6 rounded-xl bg-blue-50 p-4 text-sm text-blue-900">
-            <p>Registration opens automatically six months before each session starts. Quarterly webinar dates will be announced separately.</p>
-            <ul className="mt-2 list-disc space-y-1 pl-5 text-blue-800">
-              <li>We recommend that each partner company sends two participants per session.</li>
-              <li>Please bring at least one laptop per company. A laptop with local administrator rights is strongly preferred for software setup and testing.</li>
-            </ul>
-          </div>}
+          {selectedYear === '2027' && <section className="mb-7 rounded-2xl border border-slate-200 bg-slate-50/80 p-5 text-slate-700">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <h2 className="text-sm font-semibold text-slate-900">Before you register</h2>
+              <p className="text-xs text-slate-500">Registration opens six months before each session.</p>
+            </div>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-xl border border-slate-200 bg-white px-4 py-3">
+                <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Attendance</p>
+                <p className="mt-1 text-sm font-semibold text-slate-800">Two participants per partner company</p>
+                <p className="mt-1 text-xs leading-5 text-slate-500">Recommended for the best hands-on learning experience.</p>
+              </div>
+              <div className="rounded-xl border border-slate-200 bg-white px-4 py-3">
+                <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Laptop</p>
+                <p className="mt-1 text-sm font-semibold text-slate-800">At least one laptop per company</p>
+                <p className="mt-1 text-xs leading-5 text-slate-500">Local administrator rights are strongly preferred for software setup and testing.</p>
+              </div>
+            </div>
+          </section>}
           <div className="flex justify-center mb-8">
             <a href="https://dobotrobots999-my.sharepoint.com/:f:/g/personal/alexander_hou_dobot-global_com/IgDpZYhZJqWhS4Vf0yO6OHEWAdIOnSGpGXYqNDS1jOyDoMc"
               target="_blank" rel="noopener noreferrer"

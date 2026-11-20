@@ -127,9 +127,9 @@ export const SESSIONS_2027: TrainingSession[] = (['onboarding','welding','pallet
       category,
       trainingOptions: [courseNames[category]],
       schedule: category === 'onboarding' ? [
-        { day:'Day 1', date:date(start), training:'Dobot portfolio & ecosystem, CRA hardware, Studio Pro, setup, safety and basic programming' },
-        { day:'Day 2', date:date(start + 1), training:'Advanced programming, TCP/IP communication and hands-on practice' },
-        { day:'Day 3', date:date(end), training:'Showroom demonstrations, application introductions, open discussion and Q&A' },
+        { day:'Day 1', date:date(start), training:'Introduction & CRA Basic' },
+        { day:'Day 2', date:date(start + 1), training:'CRA Advanced & Maintenance' },
+        { day:'Day 3', date:date(end), training:'Demo & Solution Tour' },
       ] : [{ day:'Day 1', date:date(start), training: `${courseNames[category]}: process package, plugins, configuration and hands-on practice` }],
     }
   })
